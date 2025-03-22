@@ -1,9 +1,11 @@
 require('dotenv').config();
 
 const cors = require('cors');
+const passport = require('./utils/passport-config');
 const express = require('express');
 const connectDB = require('./utils/connectDB');
 const postRouter = require('./router/post/postsRouter');
+const usersRouter = require('./router/user/usersRouter');
 connectDB();
 const app = express();
 
@@ -19,9 +21,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+//Passport middleware
+app.use(passport.initialize());
 //Routes handler
-//app.use('/api/v1/posts', require('./router/post/postsRouter'));
-app.use("/api/v1",postRouter)
+app.use("/api/v1/posts",postRouter)
+app.use("/api/v1/users", usersRouter)
 
 //Not Found
 app.use((req, res, next) => {

@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
     },
     authMethod: {
         type: String,
-        enum: ["local, google","facebook", "github"],
+        enum: ["local", "google","facebook", "github"],
         required: true,
         default: "local",
     },
