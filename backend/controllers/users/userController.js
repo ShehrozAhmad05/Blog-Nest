@@ -10,7 +10,10 @@ const userController = {
     //Register a new user
     register: asyncHandler(async(req, res) => {
         const { username, email, password } = req.body;
-        const userFound = await User.findOne({ username, email });
+        //const userFound = await User.findOne({ username, email }); //Old Error Logic 
+        const userFound = await User.findOne({
+            $or: [{ username }, { email }]
+          });
         if (userFound) {
             throw new Error("User already exists");
         }
@@ -61,6 +64,40 @@ const userController = {
             })
         })(req, res, next);
     }),
+
+    //Google Auth
+    googleAuth: passport.authenticate('google', {
+        scope: ['profile']
+    }),
+    //Google Auth Callback
+    googleAuthCallback: asyncHandler(async(req, res,next) => {
+        passport.authenticate('google',
+            {
+                failureRedirect: '/login',
+                session: false
+            },(err,user,info ) => {
+                if(err){
+                    return next(err)
+                }
+                if(!user){
+                    return res.redirect('http://localhost:5173/google-login-error')
+                }
+                //generate token
+                const token = jwt.sign({id: user?._id}, process.env.JWT_SECRET,{
+                    expiresIn: '3d'
+                })
+                //set the token into the cookie
+                res.cookie('token',token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                    maxAge: 24*60*60*1000,  //1 day
+                })
+                //redirect to the user dashboard
+                res.redirect('http://localhost:5173/dashboard')
+            }
+        )(req,res,next)
+    })
 
 };
 
