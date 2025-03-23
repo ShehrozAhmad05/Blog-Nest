@@ -97,6 +97,40 @@ const userController = {
                 res.redirect('http://localhost:5173/dashboard')
             }
         )(req,res,next)
+    }),
+
+    //check user authentication status
+    checkAuthenticated : asyncHandler(async(req, res)=>{
+        const token = req.cookies['token']
+        if(!token){
+            return res.status(401).json({
+                isAuthenticated: false,
+            })
+        }
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+            //Find the user
+            const user = await User.findById(decoded.id).select('-password')
+            if(!user){
+                return res.status(401).json({
+                    isAuthenticated: false,
+                })
+            }else{
+            return res.status(200).json({
+                isAuthenticated: true,
+                _id:user?._id,
+                username: user?.username,
+                profilePicture: user?.profilePicture,
+            })
+        }
+        }
+        catch (error) {
+            return res.status(401).json({
+                isAuthenticated: false,
+                error
+            })
+        }
+
     })
 
 };
