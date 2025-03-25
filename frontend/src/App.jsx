@@ -7,6 +7,7 @@ import Home from './components/Home/Home'
 import PostDetails from './components/Posts/PostDetails'
 import Register from './components/User/Register'
 import Login from './components/User/Login'
+import Profile from './components/User/Profile'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
       {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
       <Route element={<PostDetails />} path='/posts/:postId' />
       <Route element={<Register />} path='/register'/>
+      <Route element={<Profile />} path='/profile'/>
       <Route element={<Login/>} path='/login'/>
     </Routes>
     </BrowserRouter>

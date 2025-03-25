@@ -23,3 +23,12 @@ export const loginAPI = async(userData)=>{
     })
     return response.data    
 }
+
+//Check AuthStatusAPI for user
+export const checkAuthStatusAPI = async()=>{
+    const response = await axios.get(`${BASE_URL}/users/checkAuthenticated`,
+    {
+        withCredentials: true
+    })
+    return response.data    
+}
