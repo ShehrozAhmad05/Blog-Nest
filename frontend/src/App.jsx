@@ -14,6 +14,7 @@ import { checkAuthStatusAPI } from './APIServices/users/usersAPI'
 import { useQuery } from '@tanstack/react-query'
 import { isAuthenticated } from './redux/slices/authSlices'
 import { useEffect } from 'react'
+import AuthRoute from './components/AuthRoute/AuthRoute'
 
 function App() {
 
@@ -43,7 +44,9 @@ function App() {
         {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
         <Route element={<PostDetails />} path='/posts/:postId' />
         <Route element={<Register />} path='/register' />
-        <Route element={<Profile />} path='/profile' />
+        <Route element={<AuthRoute>
+          <Profile />
+        </AuthRoute>} path='/profile' />
         <Route element={<Login />} path='/login' />
         <></>
       </Routes>
