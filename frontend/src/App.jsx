@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import CreatePost from './components/Posts/CreatePost'
 import PostsList from './components/Posts/PostsList'
 import PublicNavBar from './components/NavBar/PublicNavBar'
@@ -9,28 +9,44 @@ import Register from './components/User/Register'
 import Login from './components/User/Login'
 import Profile from './components/User/Profile'
 import PrivateNavbar from './components/NavBar/PrivateNavbar'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkAuthStatusAPI } from './APIServices/users/usersAPI'
+import { useQuery } from '@tanstack/react-query'
+import { isAuthenticated } from './redux/slices/authSlices'
+import { useEffect } from 'react'
 
 function App() {
-//get the login user from store
-const {userAuth} = useSelector((state) => state.auth)
-console.log(userAuth);
+
+  const { isError, isLoading, isSuccess, data, error, refetch } = useQuery({
+    queryKey: ['user-auth'],
+    queryFn: checkAuthStatusAPI
+  })
+
+  //dispatch 
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(isAuthenticated(data))
+  }, [data])
+
+  //get the login user from store
+  const { userAuth } = useSelector((state) => state.auth)
+  console.log(userAuth);
   return (
     <BrowserRouter>
-    {/*Navbar */}
-    {userAuth? <PrivateNavbar/>: <PublicNavBar/>}
+      {/*Navbar */}
+      {userAuth ? <PrivateNavbar /> : <PublicNavBar />}
       {/* <PublicNavBar/> */}
-    <Routes>
-      <Route element={<Home />} path='/'/>
-      <Route element={<CreatePost />} path='/create-post'/>
-      <Route element={<PostsList />} path='/posts'/>
-      {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
-      <Route element={<PostDetails />} path='/posts/:postId' />
-      <Route element={<Register />} path='/register'/>
-      <Route element={<Profile />} path='/profile'/>
-      <Route element={<Login/>} path='/login'/>
-      <></>
-    </Routes>
+      <Routes>
+        <Route element={<Home />} path='/' />
+        <Route element={<CreatePost />} path='/create-post' />
+        <Route element={<PostsList />} path='/posts' />
+        {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
+        <Route element={<PostDetails />} path='/posts/:postId' />
+        <Route element={<Register />} path='/register' />
+        <Route element={<Profile />} path='/profile' />
+        <Route element={<Login />} path='/login' />
+        <></>
+      </Routes>
     </BrowserRouter>
   )
 }
