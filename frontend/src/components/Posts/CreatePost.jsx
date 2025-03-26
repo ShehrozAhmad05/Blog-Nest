@@ -82,7 +82,7 @@ const CreatePost = () => {
   //Show messages to the user
   //for Loading
   //for Error
-  if (isError) return <AlertMessage type='error' message={errorMsg} />
+
   //No Post found
 
   return (
@@ -93,8 +93,10 @@ const CreatePost = () => {
         </h2>
         {/* show alert */}
 
-        {isLoading && <AlertMessage type='loading' message='Loading Please Wait' />}
-        {isSuccess && <AlertMessage type='success' message='Post Created Successfully' />}
+        {isLoading && (<AlertMessage type='loading' message='Loading Please Wait' />)}
+        {isSuccess && (<AlertMessage type='success' message='Post Created Successfully' />)}
+        {isError && (<AlertMessage type='error' message={errorMsg} />)}
+
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           {/* Description Input - Using ReactQuill for rich text editing */}
           <div className="mb-12">

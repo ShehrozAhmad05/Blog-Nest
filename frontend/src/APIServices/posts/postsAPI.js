@@ -5,9 +5,8 @@ const BASE_URL = 'http://localhost:5000/api/v1/posts';
 //create a post
 export const createPostAPI = async (postData) => {
     try {
-        const response = await axios.post(`${BASE_URL}/create`,  
-            //title: postData.title,
-            postData
+        const response = await axios.post(`${BASE_URL}/create`, 
+            postData, {withCredentials:true}
          );
         return response.data;
     } catch (error) {
@@ -43,7 +42,7 @@ export const updatePostAPI = async (postData) => {
         const response = await axios.put(`${BASE_URL}/${postData?.postId}`, { 
             title: postData.title,
             description: postData.description
-         });
+        }, {withCredentials:true});
         return response.data;
     } catch (err) {
         console.log(err);
@@ -53,7 +52,7 @@ export const updatePostAPI = async (postData) => {
 //delete a post
 export const deletePostAPI = async (postId) => {
     try {
-        const response = await axios.delete(`${BASE_URL}/${postId}`);
+        const response = await axios.delete(`${BASE_URL}/${postId}`,{withCredentials:true});
         return response.data;
     } catch (err) {
         console.log(err);

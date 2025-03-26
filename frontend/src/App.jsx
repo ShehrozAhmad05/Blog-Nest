@@ -39,7 +39,9 @@ function App() {
       {/* <PublicNavBar/> */}
       <Routes>
         <Route element={<Home />} path='/' />
-        <Route element={<CreatePost />} path='/create-post' />
+        <Route element={<AuthRoute>
+          <CreatePost />
+        </AuthRoute>} path='/create-post' />
         <Route element={<PostsList />} path='/posts' />
         {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
         <Route element={<PostDetails />} path='/posts/:postId' />
