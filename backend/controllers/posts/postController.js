@@ -12,7 +12,7 @@ const postController = {
         //     throw new Error('Post already exists');
         // }
     
-        const postCreated = await Post.create({ description, image: req.file });
+        const postCreated = await Post.create({ description, image: req.file, author: req.user });
         res.json({
             status: 'success',
             message: 'Post created successfully',

@@ -15,6 +15,8 @@ import { useQuery } from '@tanstack/react-query'
 import { isAuthenticated } from './redux/slices/authSlices'
 import { useEffect } from 'react'
 import AuthRoute from './components/AuthRoute/AuthRoute'
+import UserDashboard from './components/User/UserDashboard'
+import AccountSummaryDashboard from './components/User/AccountSummary'
 
 function App() {
 
@@ -39,9 +41,17 @@ function App() {
       {/* <PublicNavBar/> */}
       <Routes>
         <Route element={<Home />} path='/' />
+        <Route element={<UserDashboard />} path='/dashboard'>
+        {/* {/Account Summary Dashboard/} */}
         <Route element={<AuthRoute>
-          <CreatePost />
-        </AuthRoute>} path='/create-post' />
+            <AccountSummaryDashboard />
+          </AuthRoute>} path='' />
+
+          {/* {/Create Post/} */}
+          <Route element={<AuthRoute>
+            <CreatePost />
+          </AuthRoute>} path='create-post' />
+        </Route>
         <Route element={<PostsList />} path='/posts' />
         {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
         <Route element={<PostDetails />} path='/posts/:postId' />
