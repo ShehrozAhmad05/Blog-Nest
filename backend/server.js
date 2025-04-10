@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./utils/connectDB');
 const postRouter = require('./router/post/postsRouter');
 const usersRouter = require('./router/user/usersRouter');
+const categoriesRouter = require('./router/category/categoriesRouter');
 connectDB();
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(cookieParser()) //Automatically parse cookies from the request
 //Routes handler
 app.use("/api/v1/posts",postRouter)
 app.use("/api/v1/users", usersRouter)
+app.use("/api/v1/categories", categoriesRouter)
 
 //Not Found
 app.use((req, res, next) => {

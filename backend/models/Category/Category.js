@@ -1,27 +1,27 @@
 const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema
-({
-    categoryName: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-    },
-    posts: 
-    [
+    ({
+        categoryName: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+        },
+        posts:
+            [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Post',
+                },
+            ],
+        author:
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post',
+            ref: 'User',
         },
-    ],
-    author: 
-    {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-}, { timestamps: true }
-);
+    }, { timestamps: true }
+    );
 const Category = mongoose.model('Category', categorySchema);
 module.exports = Category;
 
