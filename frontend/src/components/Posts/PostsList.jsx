@@ -88,7 +88,7 @@ const PostsList = () => {
                         <circle cx={2} cy={2} r={2} fill="#B8B8B8" />
                       </svg>
                       <div className="py-1 px-2 rounded-md border border-gray-100 text-xs font-medium text-gray-700 inline-block">
-                        {/* {post?.category?.categoryName} */}
+                        {post?.category?.categoryName}
                       </div>
                     </div>
                   </div>

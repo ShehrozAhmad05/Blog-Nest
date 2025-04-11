@@ -1,18 +1,23 @@
 const asyncHandler = require('express-async-handler');
 const Post = require('../../models/Post/Post');
+const Category = require('../../models/Category/Category');
 
 const postController = {
     //Create a post
     createPost: asyncHandler(async (req, res) => {
         console.log(req.file);
         const { description, category } = req.body;
-    
-        // const postFound = await Post.findOne({ title });
-        // if (postFound) {
-        //     throw new Error('Post already exists');
-        // }
-    
+        //find the category 
+        const categoryFound = await Category.findById(category);
+        if (!categoryFound) {
+            throw new Error('Category not found');
+        }
+
         const postCreated = await Post.create({ description, image: req.file, author: req.user, category });
+        //push the post to the category
+        categoryFound.posts.push(categoryFound?._id);  
+        //save the category
+        await categoryFound.save();
         res.json({
             status: 'success',
             message: 'Post created successfully',
@@ -22,7 +27,7 @@ const postController = {
     //List all posts
     fetchAllPosts: asyncHandler(async (req, res) => {
     
-        const posts = await Post.find();
+        const posts = await Post.find().populate('category');
         res.status(200).json({
             status: 'success',
             posts
