@@ -4,10 +4,12 @@ import { useFormik } from 'formik'
 import 'react-quill/dist/quill.snow.css';
 import * as Yup from 'yup'
 import ReactQuill from 'react-quill'
-import { useMutation } from '@tanstack/react-query'
+import Select from 'react-select'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { createPostAPI } from '../../APIServices/posts/postsAPI'
 import AlertMessage from '../Alert/AlertMessage';
 import { FaTimesCircle } from 'react-icons/fa';
+import { fetchCategoriesAPI } from '../../APIServices/category/categoryAPI';
 
 const CreatePost = () => {
   //state for the wysiwyg 
@@ -25,22 +27,31 @@ const CreatePost = () => {
     initialValues: {
       //title: '',
       description: '',
-      image: ''
+      image: '',
+      category: ''
     },
     validationSchema: Yup.object({
       //title: Yup.string().required('Title is required'),
       description: Yup.string().required('Description is required'),
-      image: Yup.string().required('Image is required')
+      image: Yup.string().required('Image is required'),
+      category: Yup.string().required('Category is required')
     }),
     onSubmit: values => {
       //form data
       const formData = new FormData()
       formData.append('description', description)
       formData.append('image', values.image)
+      formData.append('category', values.category)
       postMutation.mutate(formData)
     }
   })
 
+  //Fetch categories
+  const { data: categoriesData} = useQuery({
+    queryKey: ['category-lists'],
+    queryFn: fetchCategoriesAPI
+  })
+  console.log(categoriesData);
   //file upload logic
   //handle file change
   const handleFileChange = (event) => {
@@ -124,10 +135,25 @@ const CreatePost = () => {
             >
               Category
             </label>
+            <Select
+              name='category'
+              options={categoriesData?.categories?.map((category)=>{
+                return {
+                  value: category._id,
+                  label: category.categoryName
+                }
+              })}
+              onChange={(option) => {
+                return formik.setFieldValue('category', option.value)
+              }}
+              value={categoriesData?.categories?.find((option) => option.value === formik.values.category
+              )}
+              className="mt-1 block w-full"
+            />
             {/* display error */}
-            {/* {formik.touched.category && formik.errors.category && (
+            {formik.touched.category && formik.errors.category && (
               <p className="text-sm text-red-600">{formik.errors.category}</p>
-            )} */}
+            )}
           </div>
 
           {/* Image Upload Input - File input for uploading images */}
