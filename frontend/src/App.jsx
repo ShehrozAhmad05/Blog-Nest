@@ -17,6 +17,7 @@ import { useEffect } from 'react'
 import AuthRoute from './components/AuthRoute/AuthRoute'
 import UserDashboard from './components/User/UserDashboard'
 import AccountSummaryDashboard from './components/User/AccountSummary'
+import AddCategory from './components/Category/AddCategory'
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
       {/* <PublicNavBar/> */}
       <Routes>
         <Route element={<Home />} path='/' />
+        {/*User Dashboard */}
         <Route element={<UserDashboard />} path='/dashboard'>
         {/* {/Account Summary Dashboard/} */}
         <Route element={<AuthRoute>
@@ -51,6 +53,10 @@ function App() {
           <Route element={<AuthRoute>
             <CreatePost />
           </AuthRoute>} path='create-post' />
+          {/* {/Create Category/} */}
+          <Route element={<AuthRoute>
+            <AddCategory />
+          </AuthRoute>} path='add-category' />
         </Route>
         <Route element={<PostsList />} path='/posts' />
         {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}

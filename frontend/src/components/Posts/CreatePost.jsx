@@ -79,11 +79,7 @@ const CreatePost = () => {
 
 
 
-  //Show messages to the user
-  //for Loading
-  //for Error
-
-  //No Post found
+ 
 
   return (
     <div className="flex items-center justify-center">
