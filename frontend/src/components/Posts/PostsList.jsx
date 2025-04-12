@@ -42,6 +42,13 @@ const PostsList = () => {
       setPage(1)
       refetch()
     }
+    //handle clear filters handler
+    const clearFilters = () =>{
+      setFilters({})
+      setSearchTerm('')
+      setPage(1)
+      refetch()
+    }
 
     const postMutation = useMutation({
         mutationKey: ['delete-post'],
@@ -61,13 +68,13 @@ const PostsList = () => {
     //     }).catch((e)=>console.log(e))
     // }
 
-    //Show messages to the user
-    //for Loading
-    if(isLoading) return <AlertMessage type='loading' message='Loading Please Wait'/>
-    //for Error
-    if(isError) return <AlertMessage type='error' message='Something wrong happened'/>
-    //No Post found
-    if(data?.posts?.length <= 0) return <NoDataFound/>
+    // Show messages to the user
+    // for Loading
+    // if(isLoading) return <AlertMessage type='loading' message='Loading Please Wait'/>
+    // for Error
+    // if(isError) return <AlertMessage type='error' message='Something wrong happened'/>
+    // No Post found
+    // if(data?.posts?.length <= 0) return <NoDataFound/>
 
     // console.log(data)
   return (
@@ -103,17 +110,22 @@ const PostsList = () => {
     </button>
   </div>
   <button
-    //onClick={clearFilters}
+    onClick={clearFilters}
     className="p-2 text-sm text-orange-500 border border-blue-500 rounded-lg hover:bg-blue-100 flex items-center gap-1"
   >
     <MdClear className="h-4 w-4" />
     Clear Filters
   </button>
 </form>
+{/* Show Alert */}
+{data?.posts?.length <= 0 && <NoDataFound text='No Post Found'/>}
+{isError && <AlertMessage type='error' message='Something wrong happened'/>}
+{isLoading && <AlertMessage type='loading' message='Loading Please Wait'/>}
         {/* Post category */}
         <PostCategory
           categories={categoriesData}
            onCategorySelect={handleCategoryFilter}
+           onClearFilters={clearFilters}
         />
         <div className="flex flex-wrap mb-32 -mx-4">
           {/* Posts */}
