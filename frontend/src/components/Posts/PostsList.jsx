@@ -7,6 +7,8 @@ import { useMutation } from '@tanstack/react-query'
 import { deletePostAPI } from '../../APIServices/posts/postsAPI'
 import NoDataFound from '../Alert/NoDataFound'
 import AlertMessage from '../Alert/AlertMessage'
+import PostCategory from '../Category/PostCategory'
+import { fetchCategoriesAPI } from '../../APIServices/category/categoryAPI'
 
 const PostsList = () => {
    const {isError, isLoading, isSuccess,data, error, refetch} = useQuery({
@@ -18,6 +20,12 @@ const PostsList = () => {
         mutationKey: ['delete-post'],
         mutationFn: deletePostAPI
     })
+    //Fetch categories
+    const { data: categoriesData} = useQuery({
+      queryKey: ['category-lists'],
+      queryFn: fetchCategoriesAPI
+    })
+    console.log(categoriesData);
 
     //delete handler
     // const deleteHandler = async (postId) => {
@@ -48,10 +56,10 @@ const PostsList = () => {
           Latest articles
         </h2>
         {/* Post category */}
-        {/* <PostCategory
+        <PostCategory
           categories={categoriesData}
-          onCategorySelect={handleCategoryFilter}
-        /> */}
+          // onCategorySelect={handleCategoryFilter}
+        />
         <div className="flex flex-wrap mb-32 -mx-4">
           {/* Posts */}
           {data?.posts?.map((post) => (

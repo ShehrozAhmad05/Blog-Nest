@@ -51,7 +51,7 @@ const CreatePost = () => {
     queryKey: ['category-lists'],
     queryFn: fetchCategoriesAPI
   })
-  console.log(categoriesData);
+  // console.log(categoriesData);
   //file upload logic
   //handle file change
   const handleFileChange = (event) => {
