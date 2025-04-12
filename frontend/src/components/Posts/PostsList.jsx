@@ -9,8 +9,8 @@ import NoDataFound from '../Alert/NoDataFound'
 import AlertMessage from '../Alert/AlertMessage'
 import PostCategory from '../Category/PostCategory'
 import { fetchCategoriesAPI } from '../../APIServices/category/categoryAPI'
-import {FaSearch} from 'react-icons/fa'
-import {MdClear} from 'react-icons/md'
+import { FaSearch } from 'react-icons/fa'
+import { MdClear } from 'react-icons/md'
 
 
 const PostsList = () => {
@@ -18,65 +18,71 @@ const PostsList = () => {
   const [filters, setFilters] = useState({})
   const [searchTerm, setSearchTerm] = useState('')
   const [page, setPage] = useState(1)
-  const {isError, isLoading, isSuccess,data, error, refetch} = useQuery({
-    queryKey: ['lists-posts',{...filters, page}],
-    queryFn:()=> fetchAllPosts({...filters, title: searchTerm, page, limit: 10}),
-})
+  const { isError, isLoading, isSuccess, data, error, refetch } = useQuery({
+    queryKey: ['lists-posts', { ...filters, page }],
+    queryFn: () => fetchAllPosts({ ...filters, title: searchTerm, page, limit: 10 }),
+  })
 
-   //category filter handler
-    const handleCategoryFilter = (categoryId) => {
-      setFilters({...filters, category: categoryId })
-      setPage(1)
-      refetch()
-    }
+  //category filter handler
+  const handleCategoryFilter = (categoryId) => {
+    setFilters({ ...filters, category: categoryId })
+    setPage(1)
+    refetch()
+  }
 
-    //search handler
-    const handleSearchChange = (e) =>{
-      setSearchTerm(e.target.value)
-    }
+  //search handler
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
 
-    //handle submit search
-    const handleSearchSubmit = (e) => {
-      e.preventDefault()
-      setFilters({...filters, title: searchTerm})
-      setPage(1)
-      refetch()
-    }
-    //handle clear filters handler
-    const clearFilters = () =>{
-      setFilters({})
-      setSearchTerm('')
-      setPage(1)
-      refetch()
-    }
+  //handle submit search
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    setFilters({ ...filters, title: searchTerm })
+    setPage(1)
+    refetch()
+  }
+  //handle clear filters handler
+  const clearFilters = () => {
+    setFilters({})
+    setSearchTerm('')
+    setPage(1)
+    refetch()
+  }
 
-    const postMutation = useMutation({
-        mutationKey: ['delete-post'],
-        mutationFn: deletePostAPI
-    })
-    //Fetch categories
-    const { data: categoriesData} = useQuery({
-      queryKey: ['category-lists'],
-      queryFn: fetchCategoriesAPI
-    })
-    // console.log(categoriesData);
+  //handle page change
+  const handlePageChange = (newPage) => {
+    setPage(newPage)
+    refetch()
+  }
 
-    //delete handler
-    // const deleteHandler = async (postId) => {
-    //     postMutation.mutateAsync(postId).then(()=>{
-    //         refetch()
-    //     }).catch((e)=>console.log(e))
-    // }
+  const postMutation = useMutation({
+    mutationKey: ['delete-post'],
+    mutationFn: deletePostAPI
+  })
+  //Fetch categories
+  const { data: categoriesData } = useQuery({
+    queryKey: ['category-lists'],
+    queryFn: fetchCategoriesAPI
+  })
+  // console.log(categoriesData);
 
-    // Show messages to the user
-    // for Loading
-    // if(isLoading) return <AlertMessage type='loading' message='Loading Please Wait'/>
-    // for Error
-    // if(isError) return <AlertMessage type='error' message='Something wrong happened'/>
-    // No Post found
-    // if(data?.posts?.length <= 0) return <NoDataFound/>
+  //delete handler
+  // const deleteHandler = async (postId) => {
+  //     postMutation.mutateAsync(postId).then(()=>{
+  //         refetch()
+  //     }).catch((e)=>console.log(e))
+  // }
 
-    // console.log(data)
+  // Show messages to the user
+  // for Loading
+  // if(isLoading) return <AlertMessage type='loading' message='Loading Please Wait'/>
+  // for Error
+  // if(isError) return <AlertMessage type='error' message='Something wrong happened'/>
+  // No Post found
+  // if(data?.posts?.length <= 0) return <NoDataFound/>
+
+  // console.log(data)
   return (
     <section className="overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -91,41 +97,41 @@ const PostsList = () => {
         </h2>
         {/* Searching Feature */}
         <form
-  onSubmit={handleSearchSubmit}
-  className="flex flex-col md:flex-row items-center gap-2 mb-4"
->
-  <div className="flex-grow flex items-center border border-gray-300 rounded-lg overflow-hidden">
-    <input
-      type="text"
-      placeholder="Search post"
-      value={searchTerm}
-      onChange={handleSearchChange}
-      className="flex-grow p-2 text-sm focus:outline-none"
-    />
-    <button
-      type="submit"
-      className="p-2 text-white bg-orange-500 hover:bg-blue-600 rounded-r-lg"
-    >
-      <FaSearch className="h-5 w-5" />
-    </button>
-  </div>
-  <button
-    onClick={clearFilters}
-    className="p-2 text-sm text-orange-500 border border-blue-500 rounded-lg hover:bg-blue-100 flex items-center gap-1"
-  >
-    <MdClear className="h-4 w-4" />
-    Clear Filters
-  </button>
-</form>
-{/* Show Alert */}
-{data?.posts?.length <= 0 && <NoDataFound text='No Post Found'/>}
-{isError && <AlertMessage type='error' message='Something wrong happened'/>}
-{isLoading && <AlertMessage type='loading' message='Loading Please Wait'/>}
+          onSubmit={handleSearchSubmit}
+          className="flex flex-col md:flex-row items-center gap-2 mb-4"
+        >
+          <div className="flex-grow flex items-center border border-gray-300 rounded-lg overflow-hidden">
+            <input
+              type="text"
+              placeholder="Search post"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="flex-grow p-2 text-sm focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="p-2 text-white bg-orange-500 hover:bg-blue-600 rounded-r-lg"
+            >
+              <FaSearch className="h-5 w-5" />
+            </button>
+          </div>
+          <button
+            onClick={clearFilters}
+            className="p-2 text-sm text-orange-500 border border-blue-500 rounded-lg hover:bg-blue-100 flex items-center gap-1"
+          >
+            <MdClear className="h-4 w-4" />
+            Clear Filters
+          </button>
+        </form>
+        {/* Show Alert */}
+        {data?.posts?.length <= 0 && <NoDataFound text='No Post Found' />}
+        {isError && <AlertMessage type='error' message='Something wrong happened' />}
+        {isLoading && <AlertMessage type='loading' message='Loading Please Wait' />}
         {/* Post category */}
         <PostCategory
           categories={categoriesData}
-           onCategorySelect={handleCategoryFilter}
-           onClearFilters={clearFilters}
+          onCategorySelect={handleCategoryFilter}
+          onClearFilters={clearFilters}
         />
         <div className="flex flex-wrap mb-32 -mx-4">
           {/* Posts */}
@@ -138,8 +144,8 @@ const PostsList = () => {
                     <div className="absolute bottom-0 right-0 z-10"></div>
                     <img
                       className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-                      src= {post?.image?.path}
-                      alt = {post?.description}
+                      src={post?.image?.path}
+                      alt={post?.description}
                     />
                   </div>
                   <div className="pt-6 pb-3 px-4">
@@ -175,8 +181,8 @@ const PostsList = () => {
       </div>
 
       {/* Pagination */}
-      {/* <div className="flex justify-center items-center my-8 space-x-4">
-        {isPreviousButtonVisible && (
+      <div className="flex justify-center items-center my-8 space-x-4">
+        {page > 1 && (
           <button
             onClick={() => handlePageChange(page - 1)}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
@@ -186,10 +192,10 @@ const PostsList = () => {
         )}
 
         <span className="text-sm font-semibold">
-          Page {page} of {postsData?.totalPages}
+          Page {page} of {data?.totalPages}
         </span>
 
-        {isNextButtonVisible && (
+        {page < data?.totalPages && (
           <button
             onClick={() => handlePageChange(page + 1)}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
@@ -197,7 +203,7 @@ const PostsList = () => {
             Next
           </button>
         )}
-      </div> */}
+      </div>
     </section>
   )
 }
