@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+import React, { useState } from 'react'
 import './postCss.css'
 import { fetchAllPosts } from '../../APIServices/posts/postsAPI'
 import { Link } from 'react-router-dom'
@@ -11,11 +11,21 @@ import PostCategory from '../Category/PostCategory'
 import { fetchCategoriesAPI } from '../../APIServices/category/categoryAPI'
 
 const PostsList = () => {
-   const {isError, isLoading, isSuccess,data, error, refetch} = useQuery({
-        queryKey: ['lists-posts'],
-        queryFn: fetchAllPosts
-    })
+  //filter state
+  const [filters, setFilters] = useState({})
+  const [searchTerm, setSearchTerm] = useState('')
+  const [page, setPage] = useState(1)
+  const {isError, isLoading, isSuccess,data, error, refetch} = useQuery({
+    queryKey: ['lists-posts',{...filters, page}],
+    queryFn:()=> fetchAllPosts({...filters, title: searchTerm, page, limit: 10}),
+})
 
+   //category filter handler
+    const handleCategoryFilter = (categoryId) => {
+      setFilters({...filters, category: categoryId })
+      setPage(1)
+      refetch()
+    }
     const postMutation = useMutation({
         mutationKey: ['delete-post'],
         mutationFn: deletePostAPI
@@ -25,7 +35,7 @@ const PostsList = () => {
       queryKey: ['category-lists'],
       queryFn: fetchCategoriesAPI
     })
-    console.log(categoriesData);
+    // console.log(categoriesData);
 
     //delete handler
     // const deleteHandler = async (postId) => {
@@ -42,7 +52,7 @@ const PostsList = () => {
     //No Post found
     if(data?.posts?.length <= 0) return <NoDataFound/>
 
-    console.log(data)
+    // console.log(data)
   return (
     <section className="overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -58,7 +68,7 @@ const PostsList = () => {
         {/* Post category */}
         <PostCategory
           categories={categoriesData}
-          // onCategorySelect={handleCategoryFilter}
+           onCategorySelect={handleCategoryFilter}
         />
         <div className="flex flex-wrap mb-32 -mx-4">
           {/* Posts */}
