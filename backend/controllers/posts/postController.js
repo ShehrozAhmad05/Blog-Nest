@@ -15,7 +15,7 @@ const postController = {
 
         const postCreated = await Post.create({ description, image: req.file, author: req.user, category });
         //push the post to the category
-        categoryFound.posts.push(categoryFound?._id);  
+        categoryFound.posts.push(categoryFound?._id);
         //save the category
         await categoryFound.save();
         res.json({
@@ -26,17 +26,36 @@ const postController = {
     }),
     //List all posts
     fetchAllPosts: asyncHandler(async (req, res) => {
-    
-        const posts = await Post.find().populate('category');
+        const { category, title, page = 1, limit = 10 } = req.query;
+        //Basic filtering
+        let filter = {}
+        if (category) {
+            filter.category = category;
+        }
+        if (title) {
+            filter.description = { $regex: title, $options: 'i' };
+        }
+        console.log(filter);
+        const posts = await Post.find(filter)
+            .populate('category')
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit).limit(limit)
+        //total number of posts
+        const totalPosts = await Post.countDocuments(filter);
+
         res.status(200).json({
             status: 'success',
-            posts
+            message: 'Posts fetched successfully',
+            posts,
+            currentPage: page,
+            perPage: limit,
+            totalPages: Math.ceil(totalPosts / limit),
         });
-    
+
     }),
     //Get a Post
     getPost: asyncHandler(async (req, res) => {
-    
+
         const postId = req.params.postId;
         const postFound = await Post.findById(postId);
         if (!postFound) {
@@ -49,7 +68,7 @@ const postController = {
             status: 'success',
             postFound
         });
-    
+
     }),
     //Delete a Post
     delete: asyncHandler(async (req, res) => {
@@ -74,7 +93,7 @@ const postController = {
 
         //get the post id from the params
         const postId = req.params.postId;
-    
+
         //find the post by id
         const postFound = await Post.findById(postId);
         if (!postFound) {
@@ -89,7 +108,7 @@ const postController = {
             { title: req.body.title, description: req.body.description },
             { new: true }
         );
-    
+
         res.status(200).json({
             status: 'success',
             message: 'Post updated successfully',
