@@ -24,7 +24,7 @@ export default function PrivateNavbar() {
     mutationFn: logoutAPI,
   });
   //logout handler
-  const logoutHandler = (async) => {
+  const logoutHandler = async() => {
     logoutMutation
     .mutateAsync()
     .then(() => {

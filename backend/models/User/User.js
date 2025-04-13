@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema({
         type: String,
         default: null,
     },
-    accountVerificationTokenExpires: {
+    accountVerificationExpires: {
         type: Date,
         default: null,
     },
@@ -93,11 +93,11 @@ const userSchema = mongoose.Schema({
             ref: "User",
         },
     ],
-    isAdmin: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
+    // isAdmin: {
+    //     type: Boolean,
+    //     required: true,
+    //     default: false,
+    // },
 }   , { timestamps: true }
 );
 
