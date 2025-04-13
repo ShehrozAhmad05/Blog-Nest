@@ -18,6 +18,7 @@ import AuthRoute from './components/AuthRoute/AuthRoute'
 import UserDashboard from './components/User/UserDashboard'
 import AccountSummaryDashboard from './components/User/AccountSummary'
 import AddCategory from './components/Category/AddCategory'
+import CreatePlan from './components/Plans/CreatePlan'
 
 function App() {
 
@@ -53,6 +54,10 @@ function App() {
           <Route element={<AuthRoute>
             <CreatePost />
           </AuthRoute>} path='create-post' />
+          {/* {/Create Plan/} */}
+          <Route element={<AuthRoute>
+            <CreatePlan />
+          </AuthRoute>} path='create-plan' />
           {/* {/Create Category/} */}
           <Route element={<AuthRoute>
             <AddCategory />
