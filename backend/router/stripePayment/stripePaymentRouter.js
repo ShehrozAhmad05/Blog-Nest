@@ -8,8 +8,8 @@ const stripePaymentRouter = express.Router();
 //Create a payment
 stripePaymentRouter.post("/checkout", isAuthenticated, stripePaymentController.payment);
 
-//Get all Plans
-//stripePaymentRouter.get("/", stripePaymentController.lists);
+//Verify the payment
+stripePaymentRouter.get("/verify/:paymentId", stripePaymentController.verify); 
 
 
 module.exports = stripePaymentRouter;

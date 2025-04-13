@@ -2,6 +2,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 const Plan = require('../../models/Plan/Plan');
+const User = require('../../models/User/User');
+const Payment = require('../../models/Payment/Payment');
 
 //Stripe Payment
 const stripePaymentController = {
@@ -28,20 +30,65 @@ const stripePaymentController = {
                 //automatic_payment_methods: { enabled: true },
                 metadata: {
                     userId: user?.toString(),
-                    userEmail: user?.email,
+                    //userEmail: user?.email,
                     subscriptionPlanId,
                 },
             });
             //Send the response
             res.json({
                 clientSecret: paymentIntent.client_secret,
-                userEmail: user?.email,
+                //userEmail: user?.email,
                 subscriptionPlanId,
+                paymentIntent
             });
         } catch (error) {
             res.json({ message: "Payment failed", error: error.message });
         }
+    }),
+    //verifying the payments
+    verify: asyncHandler(async (req, res) => {
+        //Get the payment Id
+        const { paymentId } = req.params
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+        console.log(paymentIntent)
+        //confirm the payment status
+        if (paymentIntent.status !== 'success') {
+            //get the data from the metadata
+            const metadata = paymentIntent?.metadata
+            const subscriptionPlanId = metadata?.subscriptionPlanId
+            const userId = metadata.userId
+            //Find the user
+            const userFound = await User.findById(userId)
+            if (!userFound) {
+                return res.json({ message: 'User not Found' })
+            }
+            //Get the payment details   
+            const amount = paymentIntent?.amount / 100
+            const currency = paymentIntent?.currency
+            //create the payment history
+            const newPayment =await Payment.create({
+                user: userId,
+                subscriptionPlan: subscriptionPlanId,
+                status: 'success',
+                amount,
+                currency,
+                reference: paymentId
+            })
+            if(newPayment){
+                //update the user Profile
+                userFound.hasSelectedPlan = true
+                userFound.plan = subscriptionPlanId
+                await userFound.save() 
+            }
+            //send the response
+            res.json({
+                status: true,
+                message: 'Payment Verfied, User Updated',
+                userFound
+            })
+        } 
     })
+
 }
 
 module.exports = stripePaymentController
