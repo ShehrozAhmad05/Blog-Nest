@@ -20,14 +20,12 @@ const CreatePlan = () => {
         initialValues: {
             planName: "",
             features: "",
-            limitations: "",
             price: "",
         },
         // validation
         validationSchema: Yup.object({
             planName: Yup.string().required("Plan Name is required"),
             features: Yup.string().required("Features is/are required"),
-            limitations: Yup.string().required("Limitations is/are required"),
             price: Yup.number().required("Price is required"),
         }),
         // submit
@@ -37,7 +35,6 @@ const CreatePlan = () => {
             const planData = {
                 planName: values.planName,
                 features: values.features.split(',').map((feature) => feature.trim()),
-                limitations: values.limitations.split(',').map((limitation) => limitation.trim()),
                 price: values.price,
             }
             planMutation
@@ -102,20 +99,6 @@ const CreatePlan = () => {
                     />
                     {formik.touched.features && formik.errors.features && (
                         <div className="text-red-500 mt-1">{formik.errors.features}</div>
-                    )}
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-2 text-sm font-bold text-gray-700">
-                        Limitations (comma separated):
-                    </label>
-                    <input
-                        type="text"
-                        id="limitations"
-                        {...formik.getFieldProps("limitations")}
-                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    />
-                    {formik.touched.limitations && formik.errors.limitations && (
-                        <div className="text-red-500 mt-1">{formik.errors.limitations}</div>
                     )}
                 </div>
                 <div className="mb-4">

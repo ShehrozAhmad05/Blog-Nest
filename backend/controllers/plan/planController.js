@@ -5,8 +5,7 @@ const Plan = require('../../models/Plan/Plan');
 const planController = {
     //Create a plan
     createPlan: asyncHandler(async (req, res) => {
-        console.log(req.body)
-        const { planName, features, price, limitations } = req.body;
+        const { planName, features, price } = req.body;
         //check if the plan exists
         const planFound = await Plan.findOne({ planName });
         if (planFound) {
@@ -21,7 +20,6 @@ const planController = {
         const planCreated = await Plan.create({
             planName,
             features,
-            limitations,
             price,
             user: req.user,
 
@@ -93,7 +91,7 @@ const planController = {
         //update the plan
         const planUpdated = await Plan.findByIdAndUpdate(
             planId,
-            { planName: req.body.planName, features: req.body.features, limitations:req.body.limitations, price: req.body.price },
+            { planName: req.body.planName, features: req.body.features, price: req.body.price },
             { new: true }
         );
     
