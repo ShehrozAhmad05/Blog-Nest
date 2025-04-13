@@ -8,28 +8,35 @@ import {
   FaFlag,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { userProfileAPI } from "../../APIServices/users/usersAPI";
 
-const AccountSummaryDashboard = ({}) => {
+const AccountSummaryDashboard = () => {
+  const {data, isLoading, isError, error} = useQuery({
+    queryKey:['profile'],
+    queryFn: userProfileAPI
+  })
+
   //check if user has email
 
-  const hasEmail = false;
+  const hasEmail = data?.user?.email
 
   //check if user has plan
 
-  const hasPlan = false;
+  const hasPlan = data?.user?.hasSelectedPlan
 
   //check if user has verified account
-  const isEmailVerified = false;
+  const isEmailVerified = data?.user?.isEmailVerified
 
   //total followers
-  const totalFollowers = 0;
+  const totalFollowers = data?.user?.followers?.length
 
   //total following
-  const totalFollowing = 10;
+  const totalFollowing = data?.user?.following?.length
 
   //get user posts
 
-  const userPosts = 0;
+  const userPosts = data?.user?.posts?.length
 
   //there is a view count in the post object so calculate the total views
 
@@ -110,7 +117,7 @@ const AccountSummaryDashboard = ({}) => {
        font-bold text-2xl text-gray-800 mb-4
       "
       >
-        Welcome Back User
+        Welcome Back: {data?.user?.username}
       </p>
       {/* display account verification status */}
       {/* {mutation.isPending ? (
