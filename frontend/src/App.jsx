@@ -19,6 +19,7 @@ import UserDashboard from './components/User/UserDashboard'
 import AccountSummaryDashboard from './components/User/AccountSummary'
 import AddCategory from './components/Category/AddCategory'
 import CreatePlan from './components/Plans/CreatePlan'
+import Pricing from './components/Plans/Pricing'
 
 function App() {
 
@@ -63,10 +64,12 @@ function App() {
             <AddCategory />
           </AuthRoute>} path='add-category' />
         </Route>
+        {/* Public Links */}
         <Route element={<PostsList />} path='/posts' />
         {/* <Route element={<UpdatePost />} path='/posts/:postId'/> */}
         <Route element={<PostDetails />} path='/posts/:postId' />
         <Route element={<Register />} path='/register' />
+        <Route element={<Pricing />} path='/pricing' />
         <Route element={<AuthRoute>
           <Profile />
         </AuthRoute>} path='/profile' />
