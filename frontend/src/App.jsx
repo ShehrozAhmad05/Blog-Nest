@@ -20,6 +20,7 @@ import AccountSummaryDashboard from './components/User/AccountSummary'
 import AddCategory from './components/Category/AddCategory'
 import CreatePlan from './components/Plans/CreatePlan'
 import Pricing from './components/Plans/Pricing'
+import CheckoutForm from './components/Plans/CheckoutForm'
 
 function App() {
 
@@ -70,6 +71,8 @@ function App() {
         <Route element={<PostDetails />} path='/posts/:postId' />
         <Route element={<Register />} path='/register' />
         <Route element={<Pricing />} path='/pricing' />
+        <Route element={<CheckoutForm />} path='/checkout/:planId' />
+        
         <Route element={<AuthRoute>
           <Profile />
         </AuthRoute>} path='/profile' />
