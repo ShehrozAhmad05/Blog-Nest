@@ -50,7 +50,6 @@ const stripePaymentController = {
         //Get the payment Id
         const { paymentId } = req.params
         const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
-        console.log(paymentIntent)
         //confirm the payment status
         if (paymentIntent.status !== 'success') {
             //get the data from the metadata
@@ -87,6 +86,21 @@ const stripePaymentController = {
                 userFound
             })
         } 
+    }),
+    free:asyncHandler(async(req, res)=>{
+        //check for the user
+        const user =await User.findById(req.user)
+        if(!user){
+            throw new Error("User not Found")
+        }
+        //update the user field
+        user.hasSelectedPlan = true
+        
+        //send the response
+        res.json({
+            status: true,
+            message: 'Payment Verfied, User Updated',
+        })
     })
 
 }

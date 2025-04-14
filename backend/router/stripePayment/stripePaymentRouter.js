@@ -11,5 +11,7 @@ stripePaymentRouter.post("/checkout", isAuthenticated, stripePaymentController.p
 //Verify the payment
 stripePaymentRouter.get("/verify/:paymentId", stripePaymentController.verify); 
 
+stripePaymentRouter.get("/free-plan", isAuthenticated, stripePaymentController.free); 
+
 
 module.exports = stripePaymentRouter;
