@@ -21,6 +21,7 @@ import AddCategory from './components/Category/AddCategory'
 import CreatePlan from './components/Plans/CreatePlan'
 import Pricing from './components/Plans/Pricing'
 import CheckoutForm from './components/Plans/CheckoutForm'
+import PaymentSuccess from './components/Plans/PaymentSuccess'
 
 function App() {
 
@@ -76,6 +77,9 @@ function App() {
         <Route element={<AuthRoute>
           <Profile />
         </AuthRoute>} path='/profile' />
+        <Route element={<AuthRoute>
+          <PaymentSuccess />
+        </AuthRoute>} path='/success' />
         <Route element={<Login />} path='/login' />
         <></>
       </Routes>

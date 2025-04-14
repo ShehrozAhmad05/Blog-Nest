@@ -15,22 +15,15 @@ export const paymentIntentAPI = async (planId) => {
     }
 }
 
-// //Fetch all plans
-// export const fetchPlansAPI = async () => {
-//     try {
-//         const plans = await axios.get(BASE_URL);
-//         return plans.data;
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
-// //Fetch a plan
-// export const fetchPlanAPI = async (id) => {
-//     try {
-//         const plan = await axios.get(`${BASE_URL}/${id}`);
-//         return plan.data;
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
+//payment verification
+export const paymentVerificationAPI = async (paymentId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/verify/${paymentId}`, 
+            {withCredentials:true}
+         );
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
