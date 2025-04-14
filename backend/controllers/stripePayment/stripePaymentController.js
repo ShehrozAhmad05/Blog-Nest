@@ -95,7 +95,7 @@ const stripePaymentController = {
         }
         //update the user field
         user.hasSelectedPlan = true
-        
+        await user.save()
         //send the response
         res.json({
             status: true,

@@ -27,3 +27,18 @@ export const paymentVerificationAPI = async (paymentId) => {
         throw error;
     }
 }
+
+//Free Plan
+export const freePlanAPI = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/free-plan`, 
+            {withCredentials:true}
+         );
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+

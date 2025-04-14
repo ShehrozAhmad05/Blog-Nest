@@ -22,6 +22,7 @@ import CreatePlan from './components/Plans/CreatePlan'
 import Pricing from './components/Plans/Pricing'
 import CheckoutForm from './components/Plans/CheckoutForm'
 import PaymentSuccess from './components/Plans/PaymentSuccess'
+import PayingFreePlan from './components/Plans/PayingFreePlan'
 
 function App() {
 
@@ -80,6 +81,9 @@ function App() {
         <Route element={<AuthRoute>
           <PaymentSuccess />
         </AuthRoute>} path='/success' />
+        <Route element={<AuthRoute>
+          <PayingFreePlan />
+        </AuthRoute>} path='/free-subscription' />
         <Route element={<Login />} path='/login' />
         <></>
       </Routes>
