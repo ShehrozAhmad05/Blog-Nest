@@ -148,6 +148,48 @@ const userController = {
         })
     }),
 
+    //Follow a user
+    followUser: asyncHandler(async (req, res) => {
+        //Find the user who wants to follow another user
+        const userId = req.user
+        //Get the user to follow
+        const followId = req.params.followId
+        //Update the user followers and following array
+        await User.findByIdAndUpdate(userId, {
+            $addToSet: { following: followId }
+        }, { new: true }
+        )
+        //Update the user who is being followed
+        await User.findByIdAndUpdate(followId, {
+            $addToSet: { followers: userId }
+        }, { new: true }
+        )
+        res.status(200).json({
+            message: 'User followed successfully'
+        })
+    }),
+
+    //Unfollow a user
+    unFollowUser: asyncHandler(async (req, res) => {
+        //Find the user who wants to follow another user
+        const userId = req.user
+        //Get the user to follow
+        const unfollowId = req.params.unfollowId
+        //Find the user who is being followed
+        const user = await User.findById(userId)
+        const unfollowUser = await User.findById(unfollowId)
+        if (!user || !unfollowUser) {
+            throw new Error("User not found")
+        }
+        user.following.pull(unfollowId)
+        unfollowUser.followers.pull(userId)
+        //save the user
+        await user.save()
+        await unfollowUser.save()
+        res.status(200).json({
+            message: 'User unfollowed successfully'
+        })
+    }),
 };
 
 module.exports = userController;
