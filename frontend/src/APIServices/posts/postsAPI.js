@@ -61,3 +61,27 @@ export const deletePostAPI = async (postId) => {
         console.log(err);
     }
 }
+
+//Like Post
+export const likePostAPI = async (postId) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/likes/${postId}`, {
+
+        }, { withCredentials: true });
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+//Dislike Post
+export const dislikePostAPI = async (postId) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/dislikes/${postId}`, {
+
+        }, { withCredentials: true });
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
