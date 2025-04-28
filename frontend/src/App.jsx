@@ -23,6 +23,7 @@ import Pricing from './components/Plans/Pricing'
 import CheckoutForm from './components/Plans/CheckoutForm'
 import PaymentSuccess from './components/Plans/PaymentSuccess'
 import PayingFreePlan from './components/Plans/PayingFreePlan'
+import AccountVerifiedComponent from './components/User/AccountVerification'
 
 function App() {
 
@@ -58,6 +59,10 @@ function App() {
           <Route element={<AuthRoute>
             <CreatePost />
           </AuthRoute>} path='create-post' />
+          {/* {/Verify Account/} */}
+          <Route element={<AuthRoute>
+            <AccountVerifiedComponent />
+          </AuthRoute>} path='account-verification/:verifyToken' />
           {/* {/Create Plan/} */}
           <Route element={<AuthRoute>
             <CreatePlan />
