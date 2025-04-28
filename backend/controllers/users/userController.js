@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 const passport = require("passport");
 const User = require("../../models/User/User");
 const sendAccVerificationEmail = require("../../utils/sendAccVerificationEmail");
@@ -192,12 +193,16 @@ const userController = {
         })
     }),
 
-    //Verify the email account
+    //Verify the email account (token)
     verifyEmailAccount: asyncHandler(async (req, res) => {
         //find the logged in user
         const user = await User.findById(req.user)
         if (!user) {
             throw new Error("User not found, please login")
+        }
+        //check if user email exists
+        if (!user?.email) {
+            throw new Error("Email not found")
         }
         //use the method from the model
         const token = await user.generateAccVerificationToken()
@@ -206,8 +211,35 @@ const userController = {
         //send the email
         sendAccVerificationEmail(user?.email, token)
         res.status(200).json({
+            token,
             message: `Account Verification email sent to ${user?.email}, token will expire in 10 minutes`,
         })
+    }),
+
+    //Verify the email account
+    verifyEmailAcc: asyncHandler(async (req, res) => {
+        //Get the token
+        const { verifyToken } = req.params
+        console.log(verifyToken)
+        //Convert the token to actual token that has been saved in the database
+        const cryptoToken = crypto.createHash('sha256').update(verifyToken).digest('hex')
+        console.log(cryptoToken)
+        //Find the user
+        const userFound = await User.findOne({
+            accountVerificationToken: cryptoToken,
+            accountVerificationExpires:{$gt: Date.now()}
+        })
+        if(!userFound) {
+            throw new Error("Token is invalid or has expired")
+        }
+        console.log(userFound)
+        //update the user field
+        userFound.isEmailVerified = true
+        userFound.accountVerificationToken = null
+        userFound.accountVerificationExpires = null
+        //save the user
+        await userFound.save()
+        res.json({ message: "Account successfully verified", cryptoToken })
     }),
 };
 
