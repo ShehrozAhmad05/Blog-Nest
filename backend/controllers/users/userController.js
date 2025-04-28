@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const passport = require("passport");
 const User = require("../../models/User/User");
+const sendAccVerificationEmail = require("../../utils/sendAccVerificationEmail");
 
 
 //User controller
@@ -203,7 +204,10 @@ const userController = {
         //save the user
         await user.save()
         //send the email
-        
+        sendAccVerificationEmail(user?.email, token)
+        res.status(200).json({
+            message: `Account Verification email sent to ${user?.email}, token will expire in 10 minutes`,
+        })
     }),
 };
 
