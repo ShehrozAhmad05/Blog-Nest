@@ -76,7 +76,7 @@ const Pricing = () => {
                         <div className="bg-orange-500 rounded-3xl px-8 lg:px-10 pb-14 pt-10 h-full">
                             <h2 className="text-white text-3xl font-bold font-heading mb-6">
                                 {premiumPlan?.[0]?.planName}
-                                Premium
+                                
                             </h2>
                             <div className="flex items-center gap-4 flex-wrap mb-6">
                                 <h2 className="text-white text-6xl font-bold font-heading">

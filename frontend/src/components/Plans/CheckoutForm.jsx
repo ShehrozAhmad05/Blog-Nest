@@ -21,28 +21,26 @@ const CheckoutForm = () => {
     //handle submit for payment
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (elements === null) {
-            return
-        }
-        const { error: submitErr } = await elements.submit()
-        if (submitErr) {
-            return
-        }
+        if (!stripe || !elements) return;
+    
+        const { error: submitErr } = await elements.submit();
+        if (submitErr) return;
+    
         try {
-            paymentMutation.mutateAsync(planId).then(async () => {
-                const { error } = await stripe.confirmPayment({
-                    elements,
-                    clientSecret: paymentMutation.data?.clientSecret,
-                    confirmParams: {
-                        return_url: "http://localhost:5173/success",
-                    }
-                })
-                setErrorMessage(error?.message)
-            }).catch((e) => console.log(e))
+            const data = await paymentMutation.mutateAsync(planId); // get response directly
+            const { error } = await stripe.confirmPayment({
+                elements,
+                clientSecret: data.clientSecret,
+                confirmParams: {
+                    return_url: "http://localhost:5173/success",
+                },
+            });
+            setErrorMessage(error?.message);
         } catch (error) {
-            setErrorMessage(error?.message)
+            setErrorMessage(error?.message);
         }
-    }
+    };
+    
     //console.log(paymentMutation)
     return (
         <div className="bg-gray-900 h-screen -mt-4 flex justify-center items-center">

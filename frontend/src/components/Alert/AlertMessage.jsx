@@ -11,27 +11,29 @@ const AlertMessage = ({ type, message }) => {
 
   switch (type) {
     case "error":
-      icon = <AiOutlineCloseCircle className="text-red-500 text-3xl" />;
-      colorClass = "bg-red-100 text-red-700";
+      icon = <AiOutlineCloseCircle className="text-red-500 text-2xl" />;
+      colorClass = "bg-red-50 border border-red-400 text-red-700";
       break;
     case "success":
-      icon = <AiOutlineCheckCircle className="text-green-500 text-3xl" />;
-      colorClass = "bg-green-100 text-green-700";
+      icon = <AiOutlineCheckCircle className="text-green-500 text-2xl" />;
+      colorClass = "bg-green-50 border border-green-400 text-green-700";
       break;
     case "loading":
       icon = (
-        <AiOutlineLoading3Quarters className="animate-spin text-blue-500 text-3xl" />
+        <AiOutlineLoading3Quarters className="animate-spin text-blue-500 text-2xl" />
       );
-      colorClass = "bg-blue-100 text-blue-700";
+      colorClass = "bg-blue-50 border border-blue-400 text-blue-700";
       break;
     default:
       icon = null;
   }
 
   return (
-    <div className={`flex items-center p-4  ${colorClass} space-x-3`}>
+    <div
+      className={`flex items-center p-4 rounded-lg shadow-md ${colorClass} space-x-4 transition-all duration-300`}
+    >
       {icon}
-      <span className="text-sm font-medium">{message}</span>
+      <span className="text-base font-semibold">{message}</span>
     </div>
   );
 };

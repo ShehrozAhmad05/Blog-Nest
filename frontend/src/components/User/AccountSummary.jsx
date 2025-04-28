@@ -99,7 +99,7 @@ const AccountSummaryDashboard = () => {
     {
       icon: <FaFlag />,
       label: "Posts",
-      value: userPosts?.length || 0,
+      value: userPosts || 0,
       bgColor: "bg-pink-500",
     },
     {

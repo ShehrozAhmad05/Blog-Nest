@@ -16,6 +16,8 @@ function classNames(...classes) {
 }
 
 export default function PrivateNavbar() {
+    //navigate
+    const navigate = useNavigate();
   //dispatch
    const dispatch = useDispatch();
   // user mutation
@@ -29,6 +31,7 @@ export default function PrivateNavbar() {
     .mutateAsync()
     .then(() => {
       dispatch(logout(null))
+      navigate("/login")
     }).catch((err) => console.log(err));
   };
   return (
