@@ -50,3 +50,25 @@ export const logoutAPI = async(userData)=>{
     })
     return response.data    
 }
+
+//Follow User
+export const followUserAPI = async(userId)=>{
+    const response = await axios.put(`${BASE_URL}/users/follow/${userId}`,{
+        
+    },
+    {
+        withCredentials: true
+    })
+    return response.data    
+}
+
+//UnFollow User
+export const unfollowUserAPI = async(userId)=>{
+    const response = await axios.put(`${BASE_URL}/users/unfollow/${userId}`,{
+        
+    },
+    {
+        withCredentials: true
+    })
+    return response.data    
+}
