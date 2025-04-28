@@ -5,6 +5,7 @@ const storage = require('../../utils/fileupload');
 const isAuthenticated = require('../../middlewares/isAuthenticated');
 const checkUserPlan = require('../../middlewares/checkUserPlan');
 const optionalAuth = require('../../middlewares/optionalAuth');
+const isAccountVerified = require('../../middlewares/isAccountVerified');
 
 //create instance of multer
 const upload = multer({storage});
@@ -13,7 +14,7 @@ const upload = multer({storage});
 const postRouter = express.Router();
 
 //Create a post
-postRouter.post("/create", isAuthenticated, checkUserPlan, upload.single('image'), postController.createPost);
+postRouter.post("/create", isAuthenticated, checkUserPlan, isAccountVerified, upload.single('image'), postController.createPost);
 
 //Get all posts
 postRouter.get("/", postController.fetchAllPosts);

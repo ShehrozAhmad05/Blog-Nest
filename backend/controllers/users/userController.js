@@ -190,6 +190,21 @@ const userController = {
             message: 'User unfollowed successfully'
         })
     }),
+
+    //Verify the email account
+    verifyEmailAccount: asyncHandler(async (req, res) => {
+        //find the logged in user
+        const user = await User.findById(req.user)
+        if (!user) {
+            throw new Error("User not found, please login")
+        }
+        //use the method from the model
+        const token = await user.generateAccVerificationToken()
+        //save the user
+        await user.save()
+        //send the email
+        
+    }),
 };
 
 module.exports = userController;

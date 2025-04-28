@@ -1,4 +1,5 @@
 const e = require("express");
+const crypto = require("crypto");
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
@@ -100,6 +101,18 @@ const userSchema = mongoose.Schema({
     // },
 }   , { timestamps: true }
 );
+
+//Generate a token for account verification
+userSchema.methods.generateAccVerificationToken = function () {
+    const emailToken = crypto.randomBytes(20).toString("hex")
+    //assign the token to the user
+    this.accountVerificationToken = crypto
+        .createHash("sha256")
+        .update(emailToken)
+        .digest("hex")
+        this.accountVerificationExpires = Date.now() + 10 * 60 * 1000 //10 minutes
+    return emailToken
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
