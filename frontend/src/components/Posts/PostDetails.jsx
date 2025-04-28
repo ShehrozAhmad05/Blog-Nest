@@ -109,9 +109,6 @@ const PostDetails = () => {
       .catch((e) => console.log(e))
   }
 
-
-
-  console.log(data)
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white rounded-lg shadow-lg p-5">
@@ -144,7 +141,7 @@ const PostDetails = () => {
           {/* views icon */}
           <span className="flex items-center gap-1">
             <FaEye />
-            {/* {postData?.viewsCount || 0} */}
+            {data?.postFound?.viewsCount || 0}
           </span>
         </div>
         {/* follow icon */}

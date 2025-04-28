@@ -67,12 +67,22 @@ const postController = {
     getPost: asyncHandler(async (req, res) => {
 
         const postId = req.params.postId;
+        //check for login user
+        const userId = req.user ? req.user : null;
         const postFound = await Post.findById(postId);
         if (!postFound) {
-            return res.status(404).json({
-                status: 'fail',
-                message: 'Post not found'
-            });
+            throw new Error('Post not found');
+        }
+        if (userId) {
+            //check if the user has already viewed the post
+            if (!postFound?.viewers?.includes(userId)) {
+
+                //add the user to the viewers array
+                postFound.viewers.push(userId);
+                postFound.viewsCount = postFound?.viewsCount + 1;
+                //save the post
+                await postFound.save();
+            }
         }
         res.status(200).json({
             status: 'success',
