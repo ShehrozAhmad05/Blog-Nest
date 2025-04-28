@@ -124,7 +124,77 @@ const postController = {
             message: 'Post updated successfully',
             postUpdated
         });
-    })
+    }),
+
+    //Like a post
+    like: asyncHandler(async (req, res) => {
+        //get the post id from the params
+        const postId = req.params.postId;
+        //get the user liking the post
+        const userId = req.user
+        //find the post by id
+        const postFound = await Post.findById(postId);
+        if (!postFound) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Post not found'
+            });
+        }
+        //check if the user has already disliked the post
+        const isDisliked = postFound?.dislikes.includes(userId);
+        if (isDisliked) {
+            postFound?.dislikes?.pull(userId);
+        }
+        //check if the user has already liked the post
+        const isLiked = postFound?.likes.includes(userId);
+        if (isLiked) {
+            postFound?.likes?.pull(userId);
+        }
+        else {
+            //add the user to the likes array
+            postFound?.likes?.push(userId);
+        }
+        await postFound.save();
+        res.status(200).json({
+            status: 'success',
+            message: 'Post liked successfully',
+        });
+    }),
+
+    //Dislike a post
+    dislike: asyncHandler(async (req, res) => {
+        //get the post id from the params
+        const postId = req.params.postId;
+        //get the user liking the post
+        const userId = req.user
+        //find the post by id
+        const postFound = await Post.findById(postId);
+        if (!postFound) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Post not found'
+            });
+        }
+        //check if the user has already liked the post
+        const isLiked = postFound?.likes.includes(userId);
+        if (isLiked) {
+            postFound?.likes?.pull(userId);
+        }
+        //check if the user has already disliked the post
+        const isDisliked = postFound?.dislikes.includes(userId);
+        if (isDisliked) {
+            postFound?.dislikes?.pull(userId);
+        }
+        else {
+            //add the user to the dislikes array
+            postFound?.dislikes?.push(userId);
+        }
+        await postFound.save();
+        res.status(200).json({
+            status: 'success',
+            message: 'Post disliked successfully',
+        });
+    }),
 
 }
 

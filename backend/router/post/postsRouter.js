@@ -26,4 +26,10 @@ postRouter.get("/:postId", postController.getPost);
 //delete a post
 postRouter.delete("/:postId",isAuthenticated, postController.delete);
 
+//like a post
+postRouter.put("/likes/:postId", isAuthenticated, postController.like);
+
+//dislike a post
+postRouter.put("/dislikes/:postId", isAuthenticated, postController.dislike);
+
 module.exports = postRouter;
