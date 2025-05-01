@@ -10,6 +10,8 @@ const usersRouter = require('./router/user/usersRouter');
 const categoriesRouter = require('./router/category/categoriesRouter');
 const planRouter = require('./router/plan/planRouter');
 const stripePaymentRouter = require('./router/stripePayment/stripePaymentRouter');
+const calculateEarnings = require('./utils/calculateEarnings');
+calculateEarnings() //calculate earnings
 connectDB();
 const app = express();
 

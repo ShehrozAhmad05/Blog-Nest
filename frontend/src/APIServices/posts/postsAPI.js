@@ -32,7 +32,9 @@ export const fetchAllPosts = async (filters) => {
 //Fetch a single post
 export const fetchPost = async (postId) => {
     try {
-        const post = await axios.get(`${BASE_URL}/${postId}`);
+        const post = await axios.get(`${BASE_URL}/${postId}`,{
+            withCredentials: true,
+        });
         return post.data;
     } catch (err) {
         console.log(err);
