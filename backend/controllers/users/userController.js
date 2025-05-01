@@ -236,7 +236,7 @@ const userController = {
         userFound.accountVerificationExpires = null
         //save the user
         await userFound.save()
-        res.json({ message: "Account successfully verified", cryptoToken })
+        res.json({ message: "Account successfully verified"})
     }),
 
     //forgot password (sending email token)
@@ -262,6 +262,32 @@ const userController = {
         res.status(200).json({
             message: `Password reset email sent to ${email}`,
         })
+    }),
+
+    //Reset Password
+    resetPassword: asyncHandler(async (req, res) => {
+        //Get the token
+        const { verifyToken } = req.params
+        const { password } = req.body
+        //Convert the token to actual token that has been saved in the database
+        const cryptoToken = crypto.createHash('sha256').update(verifyToken).digest('hex')
+        //Find the user
+        const userFound = await User.findOne({
+            passwordResetToken: cryptoToken,
+            passwordResetExpires:{$gt: Date.now()}
+        })
+        if(!userFound) {
+            throw new Error("Token is invalid or has expired")
+        }
+        //update the user field
+        //change the password
+        const salt = await bcrypt.genSalt(10)
+        userFound.password = await bcrypt.hash(password, salt)
+        userFound.passwordResetToken = null
+        userFound.passwordResetExpires = null
+        //save the user
+        await userFound.save()
+        res.json({ message: "Password  successfully reset" })
     }),
 };
 

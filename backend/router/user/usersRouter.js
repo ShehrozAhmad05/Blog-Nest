@@ -17,6 +17,7 @@ usersRouter.put("/unfollow/:unfollowId", isAuthenticated, userController.unFollo
 usersRouter.put("/account-verification-email", isAuthenticated, userController.verifyEmailAccount);
 usersRouter.put("/verify-account/:verifyToken", isAuthenticated, userController.verifyEmailAcc);
 usersRouter.post("/forgot-password", userController.forgotPassword);
+usersRouter.post("/reset-password/:verifyToken", userController.resetPassword);
 
 
 module.exports = usersRouter;
