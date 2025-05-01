@@ -74,15 +74,20 @@ const postController = {
             throw new Error('Post not found');
         }
         if (userId) {
-            //check if the user has already viewed the post
-            if (!postFound?.viewers?.includes(userId)) {
-
-                //add the user to the viewers array
-                postFound.viewers.push(userId);
-                postFound.viewsCount = postFound?.viewsCount + 1;
-                //save the post
-                await postFound.save();
-            }
+            await Post.findByIdAndUpdate(postId, {
+                $addToSet: { viewers: userId },
+                //$inc: { viewsCount: 1},
+            },{
+                new: true,
+            })
+            // //check if the user has already viewed the post
+            // if (!postFound?.viewers?.includes(userId)) {
+            //     //add the user to the viewers array
+            //     postFound.viewers.push(userId);
+            //     postFound.viewsCount = postFound?.viewsCount + 1;
+            //     //save the post
+            //     await postFound.save();
+            // }
         }
         res.status(200).json({
             status: 'success',

@@ -3,6 +3,7 @@ require('dotenv').config();
 const cors = require('cors');
 const passport = require('./utils/passport-config');
 const express = require('express');
+const cron = require('node-cron');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./utils/connectDB');
 const postRouter = require('./router/post/postsRouter');
@@ -11,8 +12,24 @@ const categoriesRouter = require('./router/category/categoriesRouter');
 const planRouter = require('./router/plan/planRouter');
 const stripePaymentRouter = require('./router/stripePayment/stripePaymentRouter');
 const calculateEarnings = require('./utils/calculateEarnings');
-calculateEarnings() //calculate earnings
+const earningsRouter = require('./router/earnings/earningsRouter');
+
 connectDB();
+
+//Cron job to calculate earnings every month
+cron.schedule('59 23 * * *', async () => {
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    if (today.getMonth() !== tomorrow.getMonth()) {
+        console.log('Running cron job to calculate earnings...');
+        calculateEarnings()
+    }
+}, {
+    scheduled: true,
+    timezone: "America/New_York"
+});
+
 const app = express();
 
 //PORT
@@ -31,16 +48,17 @@ app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(cookieParser()) //Automatically parse cookies from the request
 //Routes handler
-app.use("/api/v1/posts",postRouter)
+app.use("/api/v1/posts", postRouter)
 app.use("/api/v1/users", usersRouter)
 app.use("/api/v1/categories", categoriesRouter)
 app.use("/api/v1/plans", planRouter)
 app.use("/api/v1/stripe", stripePaymentRouter)
+app.use("/api/v1/earnings", earningsRouter)
 
 //Not Found
 app.use((req, res, next) => {
     //const error = new Error(`Not found - ${req.originalUrl}`);
-    res.status(404).json({message: "Route not found on server"});
+    res.status(404).json({ message: "Route not found on server" });
     //next(error);
 });
 
