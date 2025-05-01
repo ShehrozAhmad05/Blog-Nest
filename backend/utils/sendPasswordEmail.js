@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 
-const sendAccVerificationEmail = async (to, token) => {
+const sendPasswordEmail = async (to, resetToken) => {
     try {
         // Create a transporter object using SMTP transport
         const transporter = nodemailer.createTransport({
@@ -16,12 +16,12 @@ const sendAccVerificationEmail = async (to, token) => {
         //create the message
         const message = {
             to,
-            subject: 'Account Verification',
+            subject: 'Password Reset',
             html: `<p>You are receiving this email because you (or someone else) have
-            requested to verify your account.</p>
+            requested the reset of the password.</p>
             <p>Please click on the following link, or paste this into your browser to complete
             the process</p>
-            <p>http://localhost:5173/dashboard/account-verification/${token}</p>
+            <p>http://localhost:5173/dashboard/reset-password/${resetToken}</p>
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`
         }
         //send the email
@@ -35,4 +35,4 @@ const sendAccVerificationEmail = async (to, token) => {
     }
 }
 
-module.exports = sendAccVerificationEmail
+module.exports = sendPasswordEmail

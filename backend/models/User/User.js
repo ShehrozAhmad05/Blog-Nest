@@ -114,5 +114,17 @@ userSchema.methods.generateAccVerificationToken = function () {
     return emailToken
 };
 
+//Generate a token for password reset
+userSchema.methods.generatePasswordResetToken = function () {
+    const emailToken = crypto.randomBytes(20).toString("hex")
+    //assign the token to the user
+    this.passwordResetToken = crypto
+        .createHash("sha256")
+        .update(emailToken)
+        .digest("hex")
+        this.passwordResetExpires = Date.now() + 10 * 60 * 1000 //10 minutes
+    return emailToken
+};
+
 const User = mongoose.model("User", userSchema);
 module.exports = User;

@@ -5,6 +5,7 @@ const crypto = require('crypto')
 const passport = require("passport");
 const User = require("../../models/User/User");
 const sendAccVerificationEmail = require("../../utils/sendAccVerificationEmail");
+const sendPasswordEmail = require("../../utils/sendPasswordEmail");
 
 
 //User controller
@@ -211,7 +212,6 @@ const userController = {
         //send the email
         sendAccVerificationEmail(user?.email, token)
         res.status(200).json({
-            token,
             message: `Account Verification email sent to ${user?.email}, token will expire in 10 minutes`,
         })
     }),
@@ -220,10 +220,8 @@ const userController = {
     verifyEmailAcc: asyncHandler(async (req, res) => {
         //Get the token
         const { verifyToken } = req.params
-        console.log(verifyToken)
         //Convert the token to actual token that has been saved in the database
         const cryptoToken = crypto.createHash('sha256').update(verifyToken).digest('hex')
-        console.log(cryptoToken)
         //Find the user
         const userFound = await User.findOne({
             accountVerificationToken: cryptoToken,
@@ -232,7 +230,6 @@ const userController = {
         if(!userFound) {
             throw new Error("Token is invalid or has expired")
         }
-        console.log(userFound)
         //update the user field
         userFound.isEmailVerified = true
         userFound.accountVerificationToken = null
@@ -240,6 +237,31 @@ const userController = {
         //save the user
         await userFound.save()
         res.json({ message: "Account successfully verified", cryptoToken })
+    }),
+
+    //forgot password (sending email token)
+    forgotPassword: asyncHandler(async (req, res) => {
+        //find the user email
+        const { email } = req.body
+        //find the user
+        const user = await User.findOne({email})
+        if (!user) {
+            throw new Error(`User with email ${email} not found`)
+        }
+        //check if user registered with google account
+        if (user.authMethod !== 'local') {
+            throw new Error("Please login with your social account")
+        }
+
+        //use the method from the model
+        const token = await user.generatePasswordResetToken()
+        //save the user
+        await user.save()
+        //send the email
+        sendPasswordEmail(user?.email, token)
+        res.status(200).json({
+            message: `Password reset email sent to ${email}`,
+        })
     }),
 };
 
