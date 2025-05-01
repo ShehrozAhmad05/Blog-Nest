@@ -162,6 +162,10 @@ const Login = () => {
                 Sign in with Google
               </span>
             </a>
+            {/* forgot Pass link */}
+            <Link className= "mt-10 text-indigo-500" to= "/forgot-password">
+              Forgot Password?
+              </Link>
           </form>
         </div>
       </div>

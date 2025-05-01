@@ -24,6 +24,8 @@ import CheckoutForm from './components/Plans/CheckoutForm'
 import PaymentSuccess from './components/Plans/PaymentSuccess'
 import PayingFreePlan from './components/Plans/PayingFreePlan'
 import AccountVerifiedComponent from './components/User/AccountVerification'
+import RequestResetPassword from './components/User/RequestResetPassword'
+import ResetPassword from './components/User/ResetPassword'
 
 function App() {
 
@@ -79,7 +81,9 @@ function App() {
         <Route element={<Register />} path='/register' />
         <Route element={<Pricing />} path='/pricing' />
         <Route element={<CheckoutForm />} path='/checkout/:planId' />
-        
+        <Route element={<RequestResetPassword />} path='/forgot-password' />
+        <Route element={<ResetPassword />} path='/reset-password/:verifyToken' />
+
         <Route element={<AuthRoute>
           <Profile />
         </AuthRoute>} path='/profile' />
