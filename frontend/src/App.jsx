@@ -27,6 +27,7 @@ import AccountVerifiedComponent from './components/User/AccountVerification'
 import RequestResetPassword from './components/User/RequestResetPassword'
 import ResetPassword from './components/User/ResetPassword'
 import Rankings from './components/User/CreatorsRanking'
+import Notifications from './components/Notification/NotificationLists'
 
 function App() {
 
@@ -62,6 +63,10 @@ function App() {
           <Route element={<AuthRoute>
             <CreatePost />
           </AuthRoute>} path='create-post' />
+          {/* {/Notification Lists/} */}
+          <Route element={<AuthRoute>
+            <Notifications />
+          </AuthRoute>} path='notifications' />
           {/* {/Verify Account/} */}
           <Route element={<AuthRoute>
             <AccountVerifiedComponent />
