@@ -90,7 +90,12 @@ const postController = {
         const postId = req.params.postId;
         //check for login user
         const userId = req.user ? req.user : null;
-        const postFound = await Post.findById(postId);
+        const postFound = await Post.findById(postId).populate({
+            path: 'comments',
+            populate: {
+                path: 'author',
+            }
+        });
         if (!postFound) {
             throw new Error('Post not found');
         }

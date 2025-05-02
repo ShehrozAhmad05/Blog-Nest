@@ -14,6 +14,7 @@ const stripePaymentRouter = require('./router/stripePayment/stripePaymentRouter'
 const calculateEarnings = require('./utils/calculateEarnings');
 const earningsRouter = require('./router/earnings/earningsRouter');
 const notificationRouter = require('./router/notification/notificationRouter');
+const commentRouter = require('./router/comment/commentRouter');
 
 connectDB();
 
@@ -56,6 +57,7 @@ app.use("/api/v1/plans", planRouter)
 app.use("/api/v1/stripe", stripePaymentRouter)
 app.use("/api/v1/earnings", earningsRouter)
 app.use("/api/v1/notifications", notificationRouter)
+app.use("/api/v1/comments", commentRouter)
 
 //Not Found
 app.use((req, res, next) => {
