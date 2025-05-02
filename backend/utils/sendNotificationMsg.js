@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 
-const sendPasswordEmail = async (to, resetToken) => {
+const sendNotificationMsg = async (to, postId) => {
     try {
         // Create a transporter object using SMTP transport
         const transporter = nodemailer.createTransport({
@@ -16,13 +16,9 @@ const sendPasswordEmail = async (to, resetToken) => {
         //create the message
         const message = {
             to,
-            subject: 'Password Reset',
-            html: `<p>You are receiving this email because you (or someone else) have
-            requested the reset of the password.</p>
-            <p>Please click on the following link, or paste this into your browser to complete
-            the process</p>
-            <p>http://localhost:5173/reset-password/${resetToken}</p>
-            <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`
+            subject: 'New Post Created',
+            html: `<p>A new post has been created on our site Blog Nest.</p>
+            <p>Click <a href="http://localhost:5173/posts/${postId}">here</a> to view the post.</p>`
         }
         //send the email
         const info = await transporter.sendMail(message)
@@ -35,4 +31,4 @@ const sendPasswordEmail = async (to, resetToken) => {
     }
 }
 
-module.exports = sendPasswordEmail
+module.exports = sendNotificationMsg

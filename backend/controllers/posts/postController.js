@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const Post = require('../../models/Post/Post');
 const Category = require('../../models/Category/Category');
 const User = require('../../models/User/User');
+const Notification = require('../../models/Notification/Notification');
+const sendNotificationMsg = require('../../utils/sendNotificationMsg');
 
 const postController = {
     //Create a post
@@ -29,6 +31,25 @@ const postController = {
         userFound.posts.push(postCreated?._id);
         //save the user
         await userFound.save();
+        //Create notification for the user
+        await Notification.create({
+            userId: req.user,
+            postId: postCreated._id,
+            message: `New post created by ${userFound.username}`,
+        })
+
+        //send the email to his/her followers
+        userFound.followers.forEach(async (follower) => {
+            //find users by id
+            const users = await User.find({ _id: follower });
+            //loop through the users and send email
+            users.forEach((user) => {
+                //send email to the follower
+                sendNotificationMsg(user.email, postCreated._id)
+            })
+            console.log(users)
+        })
+
         res.json({
             status: 'success',
             message: 'Post created successfully',
@@ -77,7 +98,7 @@ const postController = {
             await Post.findByIdAndUpdate(postId, {
                 $addToSet: { viewers: userId },
                 //$inc: { viewsCount: 1},
-            },{
+            }, {
                 new: true,
             })
             // //check if the user has already viewed the post
