@@ -38,7 +38,7 @@ const PostDetails = () => {
   const userId = profileData?.user?._id
 
   //get if the user is following the author
-  const isFollowing = profileData?.user?.following?.find((user) => user?.toString() === targetId?.toString())
+  const isFollowing = profileData?.user?.following?.find((user) => user?._id?.toString() === targetId?.toString())
 
 
   //--Follow mutation

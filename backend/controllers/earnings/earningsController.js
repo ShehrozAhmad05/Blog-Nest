@@ -48,7 +48,12 @@ const earningsController = {
     }),
     //get earnings for a specific user
     getUserEarnings: asyncHandler(async (req, res) => {
-        const earnings = await Earnings.find({user: req.user}).populate('post')
+        const earnings = await Earnings.find({user: req.user}).populate({
+            path: 'post',
+            populate:{
+                path: 'author',
+            }
+        })
         res.json(earnings)
     })
 }

@@ -13,3 +13,14 @@ export const fetchAllEarningsAPI = async () => {
         console.log(err);
     }
 }
+
+//Fetch all user's earnings
+export const getMyEarningsAPI = async () => {
+    try {
+        const posts = await axios.get(`${BASE_URL}/my-earnings`,{withCredentials: true});
+
+        return posts.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
