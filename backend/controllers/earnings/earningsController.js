@@ -46,6 +46,11 @@ const earningsController = {
         });
 
     }),
+    //get earnings for a specific user
+    getUserEarnings: asyncHandler(async (req, res) => {
+        const earnings = await Earnings.find({user: req.user}).populate('post')
+        res.json(earnings)
+    })
 }
 
 module.exports = earningsController;
