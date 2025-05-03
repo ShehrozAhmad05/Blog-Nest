@@ -4,14 +4,28 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { userProfileAPI } from "../../APIServices/users/usersAPI";
 import truncateString from "../../utils/truncateString";
-import {htmlToText} from 'html-to-text'
+import { htmlToText } from 'html-to-text'
+import { deletePostAPI } from "../../APIServices/posts/postsAPI";
 
 const DashboardPosts = () => {
 
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError, error, refetch } = useQuery({
         queryKey: ['profile'],
         queryFn: userProfileAPI
     })
+    //delete mutation
+    const deletePostMutation = useMutation({
+        mutationKey: ['delete-post'],
+        mutationFn: deletePostAPI
+    })
+
+    //handle delete post
+    const handleDelete = (postId) => {
+        deletePostMutation.mutateAsync(postId).then(() => {
+            refetch()
+        }).catch(e => console.log(e))
+    }
+
     const userPosts = data?.user?.posts
     return (
         <section className="py-8">
@@ -69,14 +83,14 @@ const DashboardPosts = () => {
                                                             {new Date(post.nextEarningDate).toDateString()}
                                                         </span>
                                                     </td>
-                                                    {/* <td className="flex items-center mb-10 space-x-2">
+                                                    <td className="flex items-center mb-10 space-x-2">
                                                         <Link to={`/dashboard/update-post/${post._id}`}>
                                                             <FiEdit className="text-green-500 cursor-pointer" />
                                                         </Link>
                                                         <button onClick={() => handleDelete(post._id)}>
                                                             <FiTrash2 className="text-red-500 cursor-pointer" />
                                                         </button>
-                                                    </td> */}
+                                                    </td>
                                                 </tr>
                                             );
                                         })}

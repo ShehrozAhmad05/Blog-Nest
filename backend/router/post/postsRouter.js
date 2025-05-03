@@ -20,7 +20,7 @@ postRouter.post("/create", isAuthenticated, checkUserPlan, isAccountVerified, up
 postRouter.get("/", postController.fetchAllPosts);
 
 //update a post
-postRouter.put("/:postId",isAuthenticated, postController.update);
+postRouter.put("/:postId",isAuthenticated, upload.single('image'), postController.update);
 
 //get a post
 postRouter.get("/:postId", optionalAuth, postController.getPost);

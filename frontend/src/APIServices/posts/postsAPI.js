@@ -41,13 +41,12 @@ export const fetchPost = async (postId) => {
     }
 }
 
+
 //update Post
-export const updatePostAPI = async (postData) => {
+export const updatePostAPI = async ({ formData, postId }) => {
     try {
-        const response = await axios.put(`${BASE_URL}/${postData?.postId}`, { 
-            title: postData.title,
-            description: postData.description
-        }, {withCredentials:true});
+        const response = await axios.put(`${BASE_URL}/${postId}`, formData
+            , { withCredentials: true });
         return response.data;
     } catch (err) {
         console.log(err);

@@ -32,6 +32,7 @@ import MyFollowing from './components/User/MyFollowing'
 import MyFollowers from './components/User/MyFollowers'
 import MyEarnings from './components/User/MyEarnings'
 import DashboardPosts from './components/User/DashboardPosts'
+// import UpdatePost from './components/Posts/UpdatePost'
 
 function App() {
 
@@ -89,6 +90,10 @@ function App() {
           <Route element={<AuthRoute>
             <DashboardPosts />
           </AuthRoute>} path='posts' />
+          {/* {/Update Post/} */}
+          <Route element={<AuthRoute>
+            <UpdatePost />
+          </AuthRoute>} path='update-post/:postId' />
 
           {/* {/Notification Lists/} */}
           <Route element={<AuthRoute>
