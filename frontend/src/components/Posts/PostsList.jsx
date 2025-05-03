@@ -11,6 +11,7 @@ import PostCategory from '../Category/PostCategory'
 import { fetchCategoriesAPI } from '../../APIServices/category/categoryAPI'
 import { FaSearch } from 'react-icons/fa'
 import { MdClear } from 'react-icons/md'
+import truncateString from '../../utils/truncateString'
 
 const PostsList = () => {
   //filter state
@@ -144,13 +145,13 @@ const PostsList = () => {
                     <img
                       className="w-full h-full object-cover"
                       src={post?.image?.path}
-                      alt={post?.description}
+                      alt={post?._id}
                     />
                   </div>
                   <div className="pt-4">
                     <div
                       className="text-sm text-gray-700 mb-3 rendered-html-content"
-                      dangerouslySetInnerHTML={{ __html: post?.description }}
+                      dangerouslySetInnerHTML={{ __html: truncateString(post?.description, 150) }}
                     />
                     <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                       <span>{new Date(post.createdAt).toLocaleDateString()}</span>

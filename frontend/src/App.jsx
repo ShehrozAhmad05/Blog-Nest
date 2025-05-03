@@ -31,6 +31,7 @@ import Notifications from './components/Notification/NotificationLists'
 import MyFollowing from './components/User/MyFollowing'
 import MyFollowers from './components/User/MyFollowers'
 import MyEarnings from './components/User/MyEarnings'
+import DashboardPosts from './components/User/DashboardPosts'
 
 function App() {
 
@@ -83,6 +84,11 @@ function App() {
           <Route element={<AuthRoute>
             <MyEarnings />
           </AuthRoute>} path='my-earnings' />
+
+          {/* {/Dashboard Posts/} */}
+          <Route element={<AuthRoute>
+            <DashboardPosts />
+          </AuthRoute>} path='posts' />
 
           {/* {/Notification Lists/} */}
           <Route element={<AuthRoute>
