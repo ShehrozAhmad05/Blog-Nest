@@ -145,7 +145,11 @@ const userController = {
     }),
     //profile
     profile: asyncHandler(async (req, res) => {
-        const user = await User.findById(req.user).populate('posts').select('-password -passwordResetToken -passwordResetExpires -accountVerificationToken -accountVerificationExpires')
+        const user = await User.findById(req.user)
+        .populate('followers')
+        .populate('following')
+        .populate('posts')
+        .select('-password -passwordResetToken -passwordResetExpires -accountVerificationToken -accountVerificationExpires')
         res.json({
             user,
         })

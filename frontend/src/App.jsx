@@ -28,6 +28,8 @@ import RequestResetPassword from './components/User/RequestResetPassword'
 import ResetPassword from './components/User/ResetPassword'
 import Rankings from './components/User/CreatorsRanking'
 import Notifications from './components/Notification/NotificationLists'
+import MyFollowing from './components/User/MyFollowing'
+import MyFollowers from './components/User/MyFollowers'
 
 function App() {
 
@@ -52,10 +54,12 @@ function App() {
       {/* <PublicNavBar/> */}
       <Routes>
         <Route element={<Home />} path='/' />
+
         {/*User Dashboard */}
         <Route element={<UserDashboard />} path='/dashboard'>
-        {/* {/Account Summary Dashboard/} */}
-        <Route element={<AuthRoute>
+
+          {/* {/Account Summary Dashboard/} */}
+          <Route element={<AuthRoute>
             <AccountSummaryDashboard />
           </AuthRoute>} path='' />
 
@@ -63,22 +67,37 @@ function App() {
           <Route element={<AuthRoute>
             <CreatePost />
           </AuthRoute>} path='create-post' />
+
+          {/* {/My Followings/} */}
+          <Route element={<AuthRoute>
+            <MyFollowing />
+          </AuthRoute>} path='my-followings' />
+
+          {/* {/My Followers/} */}
+          <Route element={<AuthRoute>
+            <MyFollowers />
+          </AuthRoute>} path='my-followers' />
+
           {/* {/Notification Lists/} */}
           <Route element={<AuthRoute>
             <Notifications />
           </AuthRoute>} path='notifications' />
+
           {/* {/Verify Account/} */}
           <Route element={<AuthRoute>
             <AccountVerifiedComponent />
           </AuthRoute>} path='account-verification/:verifyToken' />
+
           {/* {/Create Plan/} */}
           <Route element={<AuthRoute>
             <CreatePlan />
           </AuthRoute>} path='create-plan' />
+
           {/* {/Create Category/} */}
           <Route element={<AuthRoute>
             <AddCategory />
           </AuthRoute>} path='add-category' />
+
         </Route>
         {/* Public Links */}
         <Route element={<PostsList />} path='/posts' />
@@ -94,12 +113,15 @@ function App() {
         <Route element={<AuthRoute>
           <Profile />
         </AuthRoute>} path='/profile' />
+
         <Route element={<AuthRoute>
           <PaymentSuccess />
         </AuthRoute>} path='/success' />
+
         <Route element={<AuthRoute>
           <PayingFreePlan />
         </AuthRoute>} path='/free-subscription' />
+
         <Route element={<Login />} path='/login' />
         <></>
       </Routes>
