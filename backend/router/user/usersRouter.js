@@ -1,8 +1,13 @@
 const express = require('express');
+const multer = require('multer');
 const userController = require('../../controllers/users/userController');
 const isAuthenticated = require('../../middlewares/isAuthenticated');
+const storage = require('../../utils/fileupload');
 
 const usersRouter = express.Router();
+
+//create instance of multer
+const upload = multer({storage});
 
 //Register a new user
 usersRouter.post("/register", userController.register);
@@ -18,6 +23,8 @@ usersRouter.put("/account-verification-email", isAuthenticated, userController.v
 usersRouter.put("/verify-account/:verifyToken", isAuthenticated, userController.verifyEmailAcc);
 usersRouter.post("/forgot-password", userController.forgotPassword);
 usersRouter.post("/reset-password/:verifyToken", userController.resetPassword);
+usersRouter.put("/update-email", isAuthenticated, userController.updateEmail);
+usersRouter.put("/upload-profile-picture", isAuthenticated, upload.single('image'), userController.updateProfilePic);
 
 
 module.exports = usersRouter;

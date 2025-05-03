@@ -293,6 +293,39 @@ const userController = {
         await userFound.save()
         res.json({ message: "Password  successfully reset" })
     }),
+
+    //update user email
+    updateEmail: asyncHandler(async (req,res) => {
+        //email
+        const {email} = req.body
+        //find the user
+        const user = await User.findById(req.user)
+        //update the user email
+        user.email = email
+        user.isEmailVerified = false
+        //save the user
+        await user.save()
+        //use the method from the model
+        const token = await user.generateAccVerificationToken()
+        //send the email
+        sendAccVerificationEmail(user?.email, token)
+        //send the response
+        res.status(200).json({
+            message: `Account Verification email sent to ${user?.email}, token will expire in 10 minutes`,
+        })
+
+    }),
+
+    updateProfilePic: asyncHandler(async (req, res) => {
+        //Find the user
+        await User.findByIdAndUpdate(req.user,{
+            $set: {profilePicture: req.file}
+        },{new: true})
+        //send the response
+        res.json({
+            message: "Profile picture updated successfully",
+        })
+    })
 };
 
 module.exports = userController;
