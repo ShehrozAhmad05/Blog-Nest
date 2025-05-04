@@ -82,6 +82,11 @@ const userSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    //Account type
+    accountType:{
+        type: String,
+        default: "Basic",
+    },
     followers: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -124,6 +129,19 @@ userSchema.methods.generatePasswordResetToken = function () {
         .digest("hex")
         this.passwordResetExpires = Date.now() + 10 * 60 * 1000 //10 minutes
     return emailToken
+};
+
+//method to update user account type
+userSchema.methods.updateAccountType = function () {
+    const postCount = this.posts.length;
+    if(postCount >= 50) {
+        this.accountType = "Premium";
+    }
+    else if(postCount >= 10) {
+        this.accountType = "Standard"; 
+    } else {
+        this.accountType = "Basic";
+    }
 };
 
 const User = mongoose.model("User", userSchema);

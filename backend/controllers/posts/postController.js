@@ -29,6 +29,8 @@ const postController = {
 
         //push the post to the user
         userFound.posts.push(postCreated?._id);
+        //Update the user account type
+        userFound.updateAccountType();
         //save the user
         await userFound.save();
         //Create notification for the user
