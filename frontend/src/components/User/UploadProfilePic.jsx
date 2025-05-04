@@ -3,55 +3,36 @@ import axios from 'axios'
 import { useFormik } from 'formik'
 import 'react-quill/dist/quill.snow.css';
 import * as Yup from 'yup'
-import ReactQuill from 'react-quill'
-import Select from 'react-select'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { createPostAPI } from '../../APIServices/posts/postsAPI'
 import AlertMessage from '../Alert/AlertMessage';
 import { FaTimesCircle } from 'react-icons/fa';
-import { fetchCategoriesAPI } from '../../APIServices/category/categoryAPI';
+import { uploadProfilePicAPI } from '../../APIServices/users/usersAPI';
 
-const CreatePost = () => {
-  //state for the wysiwyg 
-  const [description, setDescription] = useState('')
+const UploadProfilePic = () => {
 
   const [imageError, setImageError] = useState('')
   const [imagePreview, setImagePreview] = useState(null)
   //post mutation
-  const postMutation = useMutation({
-    mutationKey: ['create-post'],
-    mutationFn: createPostAPI
+  const mutation = useMutation({
+    mutationKey: ['upload-profile-pic'],
+    mutationFn: uploadProfilePicAPI
   })
 
   const formik = useFormik({
     initialValues: {
-      //title: '',
-      description: '',
       image: '',
-      category: ''
     },
     validationSchema: Yup.object({
-      //title: Yup.string().required('Title is required'),
-      description: Yup.string().required('Description is required'),
       image: Yup.string().required('Image is required'),
-      category: Yup.string().required('Category is required')
+      
     }),
     onSubmit: (values) => {
-      //form data
-      const formData = new FormData()
-      formData.append('description', description)
-      formData.append('image', values.image)
-      formData.append('category', values.category)
-      postMutation.mutate(formData)
+        const formData = new FormData();
+        formData.append('image',values.image)
+        mutation.mutate(formData)
     }
   })
 
-  //Fetch categories
-  const { data: categoriesData} = useQuery({
-    queryKey: ['category-lists'],
-    queryFn: fetchCategoriesAPI
-  })
-  // console.log(categoriesData);
   //file upload logic
   //handle file change
   const handleFileChange = (event) => {
@@ -80,13 +61,13 @@ const CreatePost = () => {
 
 
   //get loading state
-  const isLoading = postMutation.isPending
+  const isLoading = mutation.isPending
   //get error state
-  const isError = postMutation.isError
+  const isError = mutation.isError
   //get success
-  const isSuccess = postMutation.isSuccess
+  const isSuccess = mutation.isSuccess
   //error
-  const errorMsg = postMutation?.error?.response?.data?.message
+  const errorMsg = mutation?.error?.response?.data?.message
 
 
 
@@ -96,66 +77,15 @@ const CreatePost = () => {
     <div className="flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 m-4">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
-          Add New Post
+         Upload Profile Picture
         </h2>
         {/* show alert */}
 
         {isLoading && (<AlertMessage type='loading' message='Loading Please Wait' />)}
-        {isSuccess && (<AlertMessage type='success' message='Post Created Successfully' />)}
+        {isSuccess && (<AlertMessage type='success' message='Profile Picture Uploaded Successfully' />)}
         {isError && (<AlertMessage type='error' message={errorMsg} />)}
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
-          {/* Description Input - Using ReactQuill for rich text editing */}
-          <div className="mb-12">
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <ReactQuill
-              value={formik.values.description}
-              onChange={(value) => {
-                setDescription(value);
-                formik.setFieldValue("description", value);
-              }}
-              className='h-40'
-            />
-            {/* display err msg */}
-            {formik.touched.description && formik.errors.description && (
-              <span style={{ color: "red" }}>{formik.errors.description}</span>
-            )}
-          </div>
-
-          {/* Category Input - Dropdown for selecting post category */}
-          <div>
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Category
-            </label>
-            <Select
-              name='category'
-              options={categoriesData?.categories?.map((category)=>{
-                return {
-                  value: category._id,
-                  label: category.categoryName
-                }
-              })}
-              onChange={(option) => {
-                return formik.setFieldValue('category', option.value)
-              }}
-              value={categoriesData?.categories?.find((option) => option.value === formik.values.category
-              )}
-              className="mt-1 block w-full"
-            />
-            {/* display error */}
-            {formik.touched.category && formik.errors.category && (
-              <p className="text-sm text-red-600">{formik.errors.category}</p>
-            )}
-          </div>
-
           {/* Image Upload Input - File input for uploading images */}
           <div className="flex flex-col items-center justify-center bg-gray-50 p-4 shadow rounded-lg">
             <label
@@ -212,7 +142,7 @@ const CreatePost = () => {
             type="submit"
             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-orange-500 hover:from-indigo-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Add Post
+            Upload Picture
           </button>
         </form>
       </div>
@@ -220,4 +150,4 @@ const CreatePost = () => {
   )
 }
 
-export default CreatePost
+export default UploadProfilePic

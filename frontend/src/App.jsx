@@ -33,6 +33,8 @@ import MyFollowers from './components/User/MyFollowers'
 import MyEarnings from './components/User/MyEarnings'
 import DashboardPosts from './components/User/DashboardPosts'
 import Settings from './components/User/SettingsPage'
+import AddEmailComponent from './components/User/UpdateEmail'
+import UploadProfilePic from './components/User/UploadProfilePic'
 // import UpdatePost from './components/Posts/UpdatePost'
 
 function App() {
@@ -101,6 +103,16 @@ function App() {
           <Route element={<AuthRoute>
             <Settings />
           </AuthRoute>} path='settings' />
+
+          {/* {/Update email page/} */}
+          <Route element={<AuthRoute>
+            <AddEmailComponent />
+          </AuthRoute>} path='add-email' />
+
+          {/* {/Upload Profile Pic/} */}
+          <Route element={<AuthRoute>
+            <UploadProfilePic />
+          </AuthRoute>} path='upload-profile-photo' />
 
           {/* {/Notification Lists/} */}
           <Route element={<AuthRoute>

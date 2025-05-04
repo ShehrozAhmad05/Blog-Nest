@@ -116,3 +116,25 @@ export const resetPasswordAPI = async (data) => {
         })
     return response.data
 }
+
+//Update Email API
+export const updateEmailAPI = async (email) => {
+    const response = await axios.put(`${BASE_URL}/users/update-email`,
+        {
+            email
+        },
+        {
+            withCredentials: true
+        })
+    return response.data
+}
+
+//Upload profile pic
+export const uploadProfilePicAPI = async (formData) => {
+    const response = await axios.put(`${BASE_URL}/users/upload-profile-picture`,
+        formData,
+        {
+            withCredentials: true
+        })
+    return response.data
+}
