@@ -6,15 +6,17 @@ import {
   FaThumbsUp,
   FaThumbsDown,
   FaFlag,
+  FaCommentDots
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { sendEmailVerificationTokenAPI, userProfileAPI } from "../../APIServices/users/usersAPI";
 import AlertMessage from "../Alert/AlertMessage";
+import { getMyEarningsAPI } from "../../APIServices/earnings/earningsAPI";
 
 const AccountSummaryDashboard = () => {
-  const {data, isLoading, isError, error} = useQuery({
-    queryKey:['profile'],
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['profile'],
     queryFn: userProfileAPI
   })
 
@@ -41,25 +43,28 @@ const AccountSummaryDashboard = () => {
 
   //there is a view count in the post object so calculate the total views
 
-  const totalViews = 0;
+  //initial counters
+  let totalViews = 0;
+  let totalLikes = 0;
+  let totalComments = 0;
+  let totalDislikes = 0;
 
-  //calculate total likes but likes is an array
-
-  const totalLikes = 0;
-
-  //total posts
-
-  //calculate total comments
-
-  const totalComments = 0;
-
-  //calculate total dislikes
-
-  const totalDislikes = 0;
+  //loop through the user posts to update the initial counters
+  data?.user?.posts?.forEach((post) => {
+    totalViews += post.viewers.length
+    totalLikes += post.likes.length
+    totalDislikes += post.dislikes.length
+    totalComments += post.comments.length
+  })
 
   //total earnings
+  const { data: earnings } = useQuery({
+    queryKey: ["my-earnings"],
+    queryFn: getMyEarningsAPI
+  })
+  //calculate total amount
+  const totalEarnings = earnings.reduce((acc, curr)=> acc + curr.amount, 0)
 
-  const totalEarnings = 0;
   const stats = [
     {
       icon: <FaEye />,
@@ -104,9 +109,9 @@ const AccountSummaryDashboard = () => {
       bgColor: "bg-pink-500",
     },
     {
-      icon: <FaUsers />,
-      label: "Ranking",
-      value: "1st",
+      icon: <FaCommentDots />,
+      label: "Comments",
+      value: totalComments,
       bgColor: "bg-teal-500",
     },
   ];
@@ -114,13 +119,12 @@ const AccountSummaryDashboard = () => {
   //sending email verification token mutation
   const verificationTokenMutation = useMutation({
     mutationKey: ["send-email-verification-token"],
-    mutationFn:sendEmailVerificationTokenAPI
+    mutationFn: sendEmailVerificationTokenAPI
   })
   //handle send verification email
   const handleSendVerificationEmail = async () => {
     verificationTokenMutation.mutate()
   }
-console.log(verificationTokenMutation)
   return (
     <div className="p-4">
       <p
