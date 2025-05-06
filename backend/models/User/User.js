@@ -87,6 +87,10 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "Basic",
     },
+    isBlocked: {
+        type: Boolean,
+        default: false,
+    },
     followers: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -25,6 +25,7 @@ usersRouter.post("/forgot-password", userController.forgotPassword);
 usersRouter.post("/reset-password/:verifyToken", userController.resetPassword);
 usersRouter.put("/update-email", isAuthenticated, userController.updateEmail);
 usersRouter.put("/upload-profile-picture", isAuthenticated, upload.single('image'), userController.updateProfilePic);
-
+usersRouter.put("/block-user", isAuthenticated, userController.blockUser);
+usersRouter.put("/unblock-user", isAuthenticated,userController.unblockUser);
 
 module.exports = usersRouter;

@@ -325,7 +325,44 @@ const userController = {
         res.json({
             message: "Profile picture updated successfully",
         })
-    })
+    }),
+
+    //Block a user
+    blockUser: asyncHandler(async (req, res) => {
+        //find the user by id
+        const {userId} = req.body
+        const user = await User.findByIdAndUpdate(userId, {isBlocked: true}, {new: true})
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            })
+        }else {
+            res.status(200).json({
+                message: "User blocked successfully",
+                username: user.username,
+                isBlocked: user.isBlocked
+            })
+        }
+    }),
+
+    //Unblock a user
+    unblockUser: asyncHandler(async (req, res) => {
+        //find the user by id
+        const {userId} = req.body
+        const user = await User.findByIdAndUpdate(userId, {isBlocked: false}, {new: true})
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            })
+        }else {
+            res.status(200).json({
+                message: "User unblocked successfully",
+                username: user.username,
+                isBlocked: user.isBlocked
+            })
+        }
+    }),
+
 };
 
 module.exports = userController;
