@@ -363,6 +363,11 @@ const userController = {
         }
     }),
 
+    //List all users
+    listUsers: asyncHandler(async (req, res) => {
+        const users = await User.find()
+        res.json(users)
+    }),
 };
 
 module.exports = userController;

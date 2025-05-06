@@ -27,5 +27,6 @@ usersRouter.put("/update-email", isAuthenticated, userController.updateEmail);
 usersRouter.put("/upload-profile-picture", isAuthenticated, upload.single('image'), userController.updateProfilePic);
 usersRouter.put("/block-user", isAuthenticated, userController.blockUser);
 usersRouter.put("/unblock-user", isAuthenticated,userController.unblockUser);
+usersRouter.get("/lists", isAuthenticated, userController.listUsers);
 
 module.exports = usersRouter;
