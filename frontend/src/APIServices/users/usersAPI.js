@@ -138,3 +138,25 @@ export const uploadProfilePicAPI = async (formData) => {
         })
     return response.data
 }
+
+//List All Users API
+export const listUsersAPI = async () => {
+    const response = await axios.get(`${BASE_URL}/users/lists`,
+        {
+            withCredentials: true
+        })
+    return response.data
+}
+
+//Toggle Block User API
+export const toggleUserBlockAPI = async (data) => {
+    const response = await axios.put(
+        data?.actionURL,
+        {
+            userId: data?.userId,
+        },
+        {
+            withCredentials: true
+        })
+    return response.data
+}

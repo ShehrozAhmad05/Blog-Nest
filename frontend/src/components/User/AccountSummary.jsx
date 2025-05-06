@@ -63,7 +63,7 @@ const AccountSummaryDashboard = () => {
     queryFn: getMyEarningsAPI
   })
   //calculate total amount
-  const totalEarnings = earnings.reduce((acc, curr)=> acc + curr.amount, 0)
+  const totalEarnings = earnings?.reduce((acc, curr)=> acc + curr.amount, 0)
 
   const stats = [
     {
@@ -132,7 +132,7 @@ const AccountSummaryDashboard = () => {
        font-bold text-2xl text-gray-800 mb-4
       "
       >
-        Welcome Back: {data?.user?.username}
+       Welcome Back: {data?.user?.username} - <span className="text-gray-500">{data?.user?.accountType}</span>
       </p>
       {/* display account verification status */}
       {verificationTokenMutation.isPending ? (
