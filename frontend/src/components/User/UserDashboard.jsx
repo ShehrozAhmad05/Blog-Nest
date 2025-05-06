@@ -50,6 +50,12 @@ const navigation = [
     current: false,
   },
   {
+    name: "Users",
+   href: "/dashboard/users",
+    icon: FaUsers,
+    current: false,
+  },
+  {
     name: "Add Category",
     href: "/dashboard/add-category",
     icon: FaTags,

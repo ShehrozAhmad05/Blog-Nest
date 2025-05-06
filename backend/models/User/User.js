@@ -1,6 +1,7 @@
 const e = require("express");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 const userSchema = mongoose.Schema({
     username: {
@@ -18,6 +19,10 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: false,
+    },
+    role: {
+        type: String,
+        default: "user",
     },
     googleId: {
         type: String,
