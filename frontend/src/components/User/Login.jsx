@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   // user mutation
   const userMutation = useMutation({
-    mutationKey: ["user-registration"],
+    mutationKey: ["user-login"],
     mutationFn: loginAPI,
   });
   // formik config
@@ -64,7 +64,7 @@ const Login = () => {
             {userMutation.isError && (
               <AlertMessage
                 type="error"
-                message={userMutation.error.response.data.message}
+                message={userMutation.error?.response?.data?.message}
               />
             )}
             <label
@@ -121,6 +121,7 @@ const Login = () => {
               <div className="text-red-500 mb-5">{formik.errors.password}</div>
             )}
             <button
+              disabled={userMutation.isPending}
               className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-orange-500 w-full text-center border border-orange-600 shadow hover:bg-orange-600 focus:ring focus:ring-orange-200 transition duration-200 mb-8"
               type="submit"
             >

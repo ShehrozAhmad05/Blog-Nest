@@ -67,7 +67,7 @@ const Register = () => {
             {userMutation.isError && (
               <AlertMessage
                 type="error"
-                message={userMutation.error.response.data.message}
+                message={userMutation.error?.response?.data?.message}
               />
             )}
             <label

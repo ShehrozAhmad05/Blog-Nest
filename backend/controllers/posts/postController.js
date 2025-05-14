@@ -16,10 +16,19 @@ const postController = {
             throw new Error('Category not found');
         }
         //find the user 
-        const userFound = await User.findById(req.user);
+        const userFound = await User.findById(req.user).populate('posts').populate('plan');
         if (!userFound) {
             throw new Error('User not found');
         }
+
+        //Check Free Plan Post Limit (max 10 posts)
+        if (userFound.plan && userFound.plan.planName === 'Free' && userFound.posts.length >= 10) {
+            return res.status(403).json({
+                status: 'error',
+                message: 'Free plan allows a maximum of 10 posts. Please upgrade to a premium plan to continue.',
+            });
+        }
+        //console.log(userFound.plan.planName)
 
         const postCreated = await Post.create({ description, image: req.file, author: req.user, category });
         //push the post to the category
@@ -49,7 +58,6 @@ const postController = {
                 //send email to the follower
                 sendNotificationMsg(user.email, postCreated._id)
             })
-            console.log(users)
         })
 
         res.json({

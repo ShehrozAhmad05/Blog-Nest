@@ -5,7 +5,7 @@ const isAdmin = asyncHandler(async(req, res, next)=>{
     try {
         //check the logged in user
         const user = await User.findById(req.user)
-        //check user plan
+        //check user role
         if(user?.role !== "admin"){
             return res.status(401).json({
                 message: "You are not authorized to access this resource.",

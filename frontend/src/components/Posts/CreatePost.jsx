@@ -89,9 +89,6 @@ const CreatePost = () => {
   const errorMsg = postMutation?.error?.response?.data?.message
 
 
-
- 
-
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 m-4">

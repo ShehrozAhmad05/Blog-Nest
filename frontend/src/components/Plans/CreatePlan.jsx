@@ -11,7 +11,7 @@ const CreatePlan = () => {
     const navigate = useNavigate();
     // plan mutation
     const planMutation = useMutation({
-        mutationKey: ["user-registration"],
+        mutationKey: ["create-plan"],
         mutationFn: createPlanAPI,
     });
     // formik config

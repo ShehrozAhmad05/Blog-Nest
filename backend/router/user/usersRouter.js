@@ -3,6 +3,7 @@ const multer = require('multer');
 const userController = require('../../controllers/users/userController');
 const isAuthenticated = require('../../middlewares/isAuthenticated');
 const storage = require('../../utils/fileupload');
+const isAdmin = require('../../middlewares/isAdmin');
 
 const usersRouter = express.Router();
 
@@ -25,8 +26,8 @@ usersRouter.post("/forgot-password", userController.forgotPassword);
 usersRouter.post("/reset-password/:verifyToken", userController.resetPassword);
 usersRouter.put("/update-email", isAuthenticated, userController.updateEmail);
 usersRouter.put("/upload-profile-picture", isAuthenticated, upload.single('image'), userController.updateProfilePic);
-usersRouter.put("/block-user", isAuthenticated, userController.blockUser);
-usersRouter.put("/unblock-user", isAuthenticated,userController.unblockUser);
-usersRouter.get("/lists", isAuthenticated, userController.listUsers);
+usersRouter.put("/block-user", isAuthenticated, isAdmin, userController.blockUser);
+usersRouter.put("/unblock-user", isAuthenticated, isAdmin, userController.unblockUser);
+usersRouter.get("/lists", isAuthenticated, isAdmin, userController.listUsers);
 
 module.exports = usersRouter;
